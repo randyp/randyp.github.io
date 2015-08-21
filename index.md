@@ -10,7 +10,6 @@ Pleased to meet you. My name is Randy Pensinger, and I'm a grumpy programmer who
 * [http://github.com/randyp](http://github.com/randyp) 
 * [http://github.com/codegrump](http://github.com/codegrump)
 
-
 #### Articles
-* [Please Do Not Feed The Code Monkey](http://randyp.github.io/please-do-not-feed-the-code-monkey.html]
+* [PDNFTCM](http://randyp.github.io/please-do-not-feed-the-code-monkey.md)
 

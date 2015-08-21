@@ -1,6 +1,6 @@
 ---
 title: Please Do Not Feed The Code Monkey
-permalink: please-do-not-feed-the-code-monkey.html
+permalink: please-do-not-feed-the-code-monkey.md
 ---
 ### Please Do Not Feed The Code Monkey
 ##### CodeGrump - 2015-02-27
