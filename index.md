@@ -1,4 +1,7 @@
-### Randy Pensinger By Day
+---
+title: Randy Pensinger By Day
+---
+### {title} 
 
 #### About
 Pleased to meet you. My name is Randy Pensinger, and I'm a grumpy programmer who has seen some shit, but I'm going to try and make things better, one day at a time. 
