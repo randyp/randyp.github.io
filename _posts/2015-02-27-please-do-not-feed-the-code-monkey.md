@@ -3,7 +3,8 @@ title: Please Do Not Feed The Code Monkey
 permalink: please-do-not-feed-the-code-monkey.md
 ---
 ### Please Do Not Feed The Code Monkey
-##### CodeGrump - 2015-02-27
+
+#### CodeGrump - 2015-02-27
 
 Greetings, my name is Randy Pensinger and I write software.
 
