@@ -12,7 +12,7 @@ Pleased to meet you. My name is Randy Pensinger, and I'm a grumpy programmer who
 
 
 #### Articles
-* [Algebra Of 2D Rotations And Translations](/articles/please-do-not-feed-the-code-monkey.html]
-* [Please Do Not Feed The Code Monkey](/articles/please-do-not-feed-the-code-monkey.md]
-* [Good Programmers Are Grouchy Too](/articles/please-do-not-feed-the-code-monkey]
+* [Algebra Of 2D Rotations And Translations](//articles/please-do-not-feed-the-code-monkey.html]
+* [Please Do Not Feed The Code Monkey](//articles/please-do-not-feed-the-code-monkey.md]
+* [Good Programmers Are Grouchy Too](//articles/please-do-not-feed-the-code-monkey]
 
