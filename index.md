@@ -11,5 +11,5 @@ Pleased to meet you. My name is Randy Pensinger, and I'm a grumpy programmer who
 * [http://github.com/codegrump](http://github.com/codegrump)
 
 #### Articles
-* [PDNFTCM](http://randyp.github.io/please-do-not-feed-the-code-monkey.md)
+* [Please Do Not Feed The Code Monkey](http://randyp.github.io/please-do-not-feed-the-code-monkey.md)
 
