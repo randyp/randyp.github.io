@@ -1,0 +1,25 @@
+# IDE
+*.iml
+.idea
+.vscode
+
+# Dependencies
+node_modules/
+
+# Astro
+.astro/
+
+# Serena
+.serena/
+
+# Misc
+.DS_Store
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

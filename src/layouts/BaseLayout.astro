@@ -1,0 +1,79 @@
+---
+import LocationIcon from '../components/icons/Location.astro';
+import MailIcon from '../components/icons/Mail.astro';
+import BookIcon from '../components/icons/Book.astro';
+
+interface Props {
+  title?: string;
+  stylesheet?: string;
+  frontmatter?: {
+    title?: string;
+    stylesheet?: string;
+  };
+}
+
+const props = Astro.props;
+const frontmatter = props.frontmatter || {};
+const title = frontmatter.title || props.title || "Randy Pensinger";
+const stylesheet = frontmatter.stylesheet || props.stylesheet;
+---
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{title}</title>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="stylesheet" href="/assets/css/site.css" />
+  <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    .octicon {
+      display: inline-block;
+      vertical-align: text-bottom;
+      fill: currentColor;
+    }
+  </style>
+  <link crossorigin="anonymous" href="https://assets-cdn.github.com/pinned-octocat.svg" rel="icon" sizes="any" />
+  <link rel="mask-icon" href="https://github.githubassets.com/pinned-octocat.svg" color="#000000" />
+  <link rel="alternate icon" class="js-site-favicon" type="image/png" href="https://github.githubassets.com/favicons/favicon-dark.png" />
+  <link rel="icon" class="js-site-favicon" type="image/svg+xml" href="https://github.githubassets.com/favicons/favicon-dark.svg" />
+  {stylesheet && <link rel="stylesheet" href={`/assets/css/${stylesheet}.css`} />}
+</head>
+<body>
+  <div class="col-md-12">
+    <div class="row hidden-sm hidden-xs" style="height: 36px; max-height: 36px"></div>
+    <div class="row" style="height: 15px; max-height: 15px"></div>
+    <div class="row">
+      <div class="col-md-3 hidden-sm hidden-xs" itemscope itemtype="http://schema.org/Person" style="padding: 0 51px">
+        <a href="/" rel="prev">
+          <img alt="avatar" class="avatar hidden-sm hidden-xs" height="auto" src="https://avatars1.githubusercontent.com/u/624757?v=3&s=460" width="100%" />
+        </a>
+
+        <a href="/" rel="prev">
+          <h2 class="vcard-names">
+            <span class="vcard-username" itemprop="additionalName">randyp</span>
+          </h2>
+        </a>
+
+        <ul class="vcard-details">
+          <li class="vcard-detail hidden-sm hidden-xs" itemprop="homeLocation" title="Portland, OR"><LocationIcon /> Portland, OR</li>
+          <li class="vcard-detail hidden-sm hidden-xs"><MailIcon /> <a class="email" href="mailto:%72%73%70%65%6e%73%69%6e%67%65%72@%67%6d%61%69%6c.%63%6f%6d">rspensinger@gmail.com</a></li>
+        </ul>
+      </div>
+      <div class="col-md-8">
+        <div>
+          <a href="/" rel="prev"><h3 class="article-header"><BookIcon /> <span class="current-file">randyp.md</span></h3></a>
+          <article class="markdown-body">
+            <slot />
+          </article>
+        </div>
+        <footer><p>&copy; Randy Pensinger</p></footer>
+      </div>
+      <div class="col-md-1">
+      </div>
+    </div>
+  </div>
+</body>
+</html>

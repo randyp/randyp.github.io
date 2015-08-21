@@ -1,0 +1,30 @@
+{
+  "name": "randyp.github.io",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Personal website for Randy Pensinger",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "tsc --noEmit",
+    "astro": "astro"
+  },
+  "keywords": [],
+  "author": "randyp",
+  "license": "ISC",
+  "dependencies": {
+    "@astrojs/mdx": "^5.0.0",
+    "astro": "^6.0.2",
+    "d3": "^7.9.0",
+    "seedrandom": "^3.0.5"
+  },
+  "devDependencies": {
+    "@types/d3": "^7.4.3",
+    "@types/seedrandom": "^3.0.8",
+    "typescript": "^5.9.3"
+  }
+}
