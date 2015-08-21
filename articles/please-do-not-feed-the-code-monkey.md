@@ -1,11 +1,11 @@
 ---
-title: Please Do Not Feed The Code Monkey
-author: CodeGrump
-date: 2015-02-27 
+title: 
+author: 
+date: 
 ---
 
-### { title }
-{ author } - { date }
+### Please Do Not Feed The Code Monkey
+######CodeGrump - 2015-02-27
 
 Greetings, my name is Randy Pensinger and I write software.
 
