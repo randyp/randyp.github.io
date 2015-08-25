@@ -1,6 +1,9 @@
 ### About
 Pleased to meet you. My name is Randy Pensinger, and I'm a programmer who has seen code gone wrong, but I'm going to try and make things better one day at a time.
 
+### Resume
+* [Online Version](http://github.com/randyp/resume)
+
 ### Code
 * [http://github.com/randyp](http://github.com/randyp)
 * [http://github.com/codegrump](http://github.com/codegrump)
