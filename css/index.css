@@ -24,7 +24,7 @@
     /*color: rgb(51, 51, 51);*/
 /*}*/
 
-.vcard-details ul {
+ul.vcard-details li {
     list-style-type: none;
 }
 
