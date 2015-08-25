@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>randyp</title>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-
-    <link crossorigin="anonymous" href="https://assets-cdn.github.com/assets/github/index-17ad0ea72cb80a46ba6d1bd6e3c69789acb0e1c0cae43beb90477759cce1bdfd.css" media="all" rel="stylesheet">
-    <link crossorigin="anonymous" href="https://assets-cdn.github.com/assets/github2/index-239d3460922660972671a8af204cd73edf4c17dfb15363bedadcd37e5beeca47.css" media="all" rel="stylesheet">
     <link crossorigin="anonymous" href="css/index.css" media="all" rel="stylesheet">
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("h3[href]").each(function(){
+                var $this = $(this);
+                $this.click(function(){
+                    console.log("hello there");
+                });
+            });
+        });
+    </script>
 </head>
 <body>
 <div>
