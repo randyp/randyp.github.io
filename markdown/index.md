@@ -9,5 +9,4 @@ Here is my [Online Resume](http://github.com/randyp/resume), which has some info
 * [http://github.com/codegrump](http://github.com/codegrump)
 
 ### Articles
-
 * [Please Do Not Feed The Code Monkey](please-do-not-feed-the-code-monkey.html)
