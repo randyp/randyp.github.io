@@ -15,5 +15,4 @@ for MD in ${MDS}; do
     cat markdown/end.frag.html >> ${MD}.html
 done
 git add *.html && git commit -am 'update'
-git push
 
