@@ -11,7 +11,7 @@
             $("h3[href]").each(function(){
                 var $this = $(this);
                 $this.click(function(){
-                    console.log("hello there");
+                    window.location.assign($this.attr('href'));
                 });
             });
         });
