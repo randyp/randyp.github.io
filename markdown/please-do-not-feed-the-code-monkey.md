@@ -1,5 +1,5 @@
 ### Please Do Not Feed The Code Monkey
-#### 2015-02-27
+#### 2015-02-27 by CodeGrump
 
 Greetings, my name is Randy Pensinger and I write software.
 
