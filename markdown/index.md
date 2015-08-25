@@ -7,4 +7,4 @@ Pleased to meet you. My name is Randy Pensinger, and I'm a programmer who has se
 
 ### Articles
 
-* [Please Do Not Feed The Code Monkey](html/please-do-not-feed-the-code-monkey)
+* [Please Do Not Feed The Code Monkey](please-do-not-feed-the-code-monkey.html)
