@@ -19,5 +19,5 @@
 </head>
 <body>
 <div>
-    <h3>Randy Pensinger by day...</h3>
+    <h3 href="index.html">Randy Pensinger by day...</h3>
     <article class="markdown-body">
