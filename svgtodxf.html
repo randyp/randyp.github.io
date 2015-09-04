@@ -23,8 +23,21 @@
             });
             var $version = $("#version");
             $("#svg-examples a").click(function (e) {
-                $svgIn.load(this.href, function () {
-                    setTimeout(update, 100);
+                var $this = this;
+                $.ajax({
+                    url: $this.href,
+                    type: 'GET',
+                    crossDomain: true,
+                    dataType: 'image/svg',
+                    success: function (data) {
+                        $svgIn.val(data).trigger("input");
+                        console.log("version success", data);
+                    },
+                    error : function(response){
+                        $svgIn.val(response.responseText).trigger("input");
+                        setTimeout(update);
+                        console.log("version error", response);
+                    }
                 });
                 e.preventDefault();
             });
@@ -49,19 +62,20 @@
             updateVersion();
 
             function update() {
+                console.log($svgIn.val());
                 $dxfOut.text("converting...");
                 $.ajax({
                     url: "http://codegrump.com/svg-to-dxf",
-                    data: $svgIn.text(),
+                    data: $svgIn.val(),
                     type: 'POST',
                     crossDomain: true,
                     dataType: 'image/svg',
                     success: function (data) {
-                        $dxfOut.text(data);
+                        $dxfOut.val(data);
                         console.log("success", data);
                     },
                     error: function (response) {
-                        $dxfOut.text(response.responseText);
+                        $dxfOut.val(response.responseText);
                         console.log("error", response, response.getAllResponseHeaders());
                     },
                     complete: function () {
@@ -78,7 +92,6 @@
             }
             var timeout = null;
             $svgIn.on('input', function (e) {
-                console.log(timeout);
                 clearTimeout(timeout);
                 timeout = setTimeout(update, 500);
             });
