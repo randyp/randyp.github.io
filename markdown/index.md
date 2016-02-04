@@ -1,5 +1,5 @@
 ### Status
-Currently on sabbatical. Almost done working on [JDBJ](http://github.com/randyp](http://github.com/randyp/jdbj).
+Mostly done with my sabbatical, applying for jobs! Exciting!
 
 ### About
 Welcome! My name is Randy Pensinger and I write software. Sometimes as my self, sometimes as the codegrump...
