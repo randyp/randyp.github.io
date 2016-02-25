@@ -14,14 +14,16 @@
 
 <p>The density at (i,j) represents the probability of e<sub>j</sub> being shuffled to position i</p>
 
-<div><label>N</label><input id="n" type="text" value="5">
+<div><label>n:</label><input id="n" type="text" value="5">
     <button onclick="vizualize()">Shuffle!</button>
 </div>
 <br>
+<h3 id="vis-header"></h3>
 <svg id="shuffle-viz">
 
 </svg>
 <script type="text/javascript">
+    var header = d3.select("h3#vis-header");
     var svg = d3.select("svg#shuffle-viz");
 
     function Fraction(num, denom) {
@@ -124,10 +126,17 @@
             });
         }
 
+        header.text("Probabilities Before shuffle");
         draw();
 
         function doSwap(k) {
-            console.log(k);
+            var headerText;
+            if(k > 1){
+                headerText = "Probabilities after i=" + k;
+            }else{
+                headerText = "Probabilities after shuffle";
+            }
+            header.text(headerText);
             var m = k + 1;
             var p = new Fraction(1, m);
             var cp = new Fraction(k, m);
@@ -142,6 +151,8 @@
                 setTimeout(function () {
                     doSwap(k - 1);
                 }, 2000);
+            }else{
+
             }
         }
 
