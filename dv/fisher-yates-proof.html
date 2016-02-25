@@ -25,6 +25,7 @@
 <script type="text/javascript">
     var header = d3.select("h3#vis-header");
     var svg = d3.select("svg#shuffle-viz");
+    var lastTimeout;
 
     function Fraction(num, denom) {
         this.num = num;
@@ -60,6 +61,8 @@
     }
 
     function vizualize() {
+        clearTimeout(lastTimeout);
+
         var n = document.getElementById("n").value;
 
         var w = 500,
@@ -148,7 +151,7 @@
             columns[k][k] = columns[k][k].mult(p);
             draw();
             if (k > 1) {
-                setTimeout(function () {
+                lastTimeout = setTimeout(function () {
                     doSwap(k - 1);
                 }, 2000);
             }else{
@@ -156,7 +159,7 @@
             }
         }
 
-        setTimeout(function () {
+        lastTimeout = setTimeout(function () {
             doSwap(n - 1)
         }, 2000);
     }
