@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>randyp</title>
+    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</head>
+<body>
+<h2>Visual proof of Fisher Yates Shuffle</h2>
+
+<p>Columns represent original positions of elements, rows represent shuffled positions of elements, and </p>
+
+<p>Hence the density at (i,j) represents the probability of ej being shuffled to position i</p>
+
+<div><input type="text" value="3">
+    <button onclick="vizualize()">Shuffle!</button>
+</div>
+<br>
+<svg id="shuffle-viz">
+
+</svg>
+<script type="text/javascript">
+    var svg = d3.select("svg#shuffle-viz");
+
+    function Fraction(num, denom) {
+        this.num = num;
+        this.denom = denom;
+
+        this.mult = function (otherFraction) {
+            var newNum = this.num * otherFraction.num;
+            var newDenom = this.denom * otherFraction.denom;
+            if (this.num == otherFraction.denom) {
+                newNum = otherFraction.num;
+                newDenom = this.denom;
+            } else if (this.denom == otherFraction.num) {
+                newNum = this.num;
+                newDenom = otherFraction.denom;
+            }
+            return new Fraction(newNum, newDenom);
+        };
+
+        this.eval = function () {
+            return this.num / this.denom;
+        };
+
+        this.toString = function () {
+            var toReturn = this.num + "/" + this.denom;
+            if (this.num == 0) {
+                toReturn = "0";
+            } else if (this.num == 1 && this.denom == 1) {
+                toReturn = "1";
+            }
+            return toReturn;
+        };
+        return this;
+    }
+
+    function vizualize(n) {
+        n = 5;
+
+        var w = 500,
+                s = w / n;
+
+        var columns = [];
+        for (var i = 0; i < n; i++) {
+            var column = [];
+            columns.push(column);
+            for (var j = 0; j < n; j++) {
+                column.push(i == j ? new Fraction(1, 1) : new Fraction(0, 1));
+            }
+        }
+
+        svg.selectAll("*").remove();
+        svg.attr("width", w).attr("height", w);
+
+        var columnGroup = svg.selectAll("g")
+                .data(columns)
+                .enter()
+                .append("g")
+                .attr("transform", function (column, i) {
+                    return "translate(" + (i * s + 1) + ",0)";
+                });
+
+
+        function draw() {
+            var cell = columnGroup.selectAll("g")
+                    .data(function (d, i) {
+                        return d;
+                    });
+
+            cell.enter().append("g")
+                    .attr("transform", function (p, j) {
+                        return "translate(0," + (j * s + 1) + ")"
+                    });
+
+            var rect = cell.selectAll("rect").data(function (d) {
+                return [d]
+            });
+
+            rect.enter().append("rect")
+                    .attr("width", s - 2)
+                    .attr("height", s - 2);
+
+            rect.attr("fill", function (d) {
+                var p = d.eval();
+                var c = p == 0.0 ? 255 : 200 * (1 - p);
+                return d3.rgb(c, c, c);
+            });
+
+            var text = cell.selectAll("text").data(function (d) {
+                return [d];
+            });
+
+            text.enter().append("text")
+                    .attr("text-anchor", "middle")
+                    .attr("fill", "#ffffff")
+                    .attr("x", s/2)
+                    .attr("y", s/2);
+
+            text.text(function (d) {
+                return d.toString()
+            });
+        }
+
+        draw();
+
+        function doSwap(k) {
+            console.log(k);
+            var m = k + 1;
+            var p = new Fraction(1, m);
+            var cp = new Fraction(k, m);
+            for (var i = 0; i < k; i++) {
+                columns[k][i] = columns[i][i].mult(p);
+                columns[i][k] = columns[k][i];
+                columns[i][i] = columns[i][i].mult(cp);
+            }
+            columns[k][k] = columns[k][k].mult(p);
+            draw();
+            if (k > 1) {
+                setTimeout(function () {
+                    doSwap(k - 1);
+                }, 2000);
+            }
+        }
+
+        setTimeout(function () {
+            doSwap(n - 1)
+        }, 2000);
+    }
+</script>
+</body>
+</html>
