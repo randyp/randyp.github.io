@@ -44,6 +44,16 @@
             return new Fraction(newNum, newDenom);
         };
 
+        this.sub = function(otherFraction){
+            var newNum = this.num*otherFraction.denom - otherFraction.num*this.denom;
+            var newDenom = this.denom * otherFraction.denom;
+            if (this.denom == otherFraction.denom) {
+                newNum = this.num - otherFraction.num;
+                newDenom = this.denom;
+            }
+            return new Fraction(newNum, newDenom);
+        };
+
         this.eval = function () {
             return this.num / this.denom;
         };
@@ -132,36 +142,41 @@
         header.text("Probabilities Before shuffle");
         draw();
 
-        function doSwap(k) {
+        function doSwap(k, j) {
+            if(typeof j === 'undefined'){
+                j = 0;
+            }
             var headerText;
             if(k > 1){
-                headerText = "Probabilities after i=" + k;
+                headerText = "Probabilities i=" + k;
             }else{
-                headerText = "Probabilities after shuffle";
+                headerText = "Probabilities when shuffled";
             }
             header.text(headerText);
             var m = k + 1;
             var p = new Fraction(1, m);
             var cp = new Fraction(k, m);
-            for (var i = 0; i < k; i++) {
-                columns[k][i] = columns[i][i].mult(p);
-                columns[i][k] = columns[k][i];
-                columns[i][i] = columns[i][i].mult(cp);
-            }
-            columns[k][k] = columns[k][k].mult(p);
+            var rn = new Fraction(1, n);
+            columns[k][j] = columns[j][j].mult(p);
+            columns[j][k] = columns[k][j];
+            columns[j][j] = columns[j][j].mult(cp);
+            columns[k][k] = columns[k][k].sub(rn);
             draw();
             if (k > 1) {
+                j++;
+                if(j == k){
+                    j = 0;
+                    k-=1;
+                }
                 lastTimeout = setTimeout(function () {
-                    doSwap(k - 1);
-                }, 2000);
-            }else{
-
+                    doSwap(k, j);
+                }, 500);
             }
         }
 
         lastTimeout = setTimeout(function () {
             doSwap(n - 1)
-        }, 2000);
+        }, 500);
     }
 </script>
 </body>
