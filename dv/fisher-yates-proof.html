@@ -246,6 +246,7 @@
     <p>The fisher-yates algorithm shuffles by swapping the last element, e<sub>n</sub>, with an element e<sub>i</sub> at
         a random position i, then recursing on all elements from e<sub>0</sub> to e<sub>n-1</sub>. In software we call
         those remaining elements the sublist from 0 to n-1.</p>
+
     <svg id="algorithm-viz">
 
     </svg>
@@ -255,13 +256,13 @@
                     n = permutation.length,
                     w = 300,
                     s = w / n,
-                    h = s * 5;
+                    h = s * 3.2;
 
             var data;
 
             var svg = d3.select("svg#algorithm-viz").attr("width", w).attr("height", h);
 
-            var elementsGroup = svg.append("g").attr("transform", "translate(" + [0, s * 1.5] + ")");
+            var elementsGroup = svg.append("g").attr("transform", "translate(" + [0, s * 1.1] + ")");
 
             function draw(iteration, swapIndex) {
                 var element = elementsGroup.selectAll("g").data(data);
