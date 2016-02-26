@@ -139,7 +139,7 @@
             });
         }
 
-        header.text("Probabilities Before shuffle");
+        header.text("Probabilities Before shuffle (each element only at its original position)");
         draw();
 
         function doSwap(k, j) {
@@ -176,7 +176,7 @@
 
         lastTimeout = setTimeout(function () {
             doSwap(n - 1)
-        }, 500);
+        }, 2000);
     }
 </script>
 </body>
