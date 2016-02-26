@@ -68,7 +68,7 @@
     <div>
         <label>n:</label> <input id="n" type="text" value="5">
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <button onclick="startShuffleViz()">Shuffle!</button>
+        <button onclick="startShuffleViz()">Visualize!</button>
     </div>
     <br>
 
@@ -127,6 +127,7 @@
             return this;
         }
 
+        var lastHeader;
         function setupVisualizeShuffle() {
             clearTimeout(lastTimeout);
             var n = document.getElementById("n").value;
@@ -162,12 +163,25 @@
                 return "translate(" + [x(col), x(row) + highlightOffset] + ")"
             }
 
+            var lastHeaderText;
             function draw(animatedK, animatedJ) {
                 var cell = svg.selectAll("g.cell").data(data);
 
                 cell.enter().append("g")
                         .attr("class", "cell")
-                        .attr("transform", translate_cell);
+                        .attr("transform", translate_cell)
+                        .on("mouseover", function(d){
+                            if(d.p.eval() > 0){
+                                lastHeaderText = header.text();
+                                header.text("Element " + d.col + " will be shuffled to position " + d.row + " with p=" + d.p.toString());
+                            }
+                        })
+                        .on("mouseout", function(d){
+                            if(d.p.eval() > 0){
+                                header.text(lastHeaderText);
+                            }
+                        });
+
 
                 cell.style("opacity", function (d) {
                     return d.p.eval() > 0 ? 1 : 0;
@@ -248,7 +262,7 @@
                     dataLookup[[j, k]].p = dataLookup[[k, j]].p;
                     dataLookup[[j, j]].p = dataLookup[[j, j]].p.mult(cp);
                     dataLookup[[k, k]].p = dataLookup[[k, k]].p.sub(rn);
-                    headerText = "Probabilities if we swap(" + [k, j] + ") with p=" + p;
+                    headerText = "Probabilities if we swap element " + k + " with random element between [0, " + k + "]";
                     draw(k, j);
                     j++;
                     if (j == k) {
@@ -257,9 +271,10 @@
                     }
                     lastTimeout = setTimeout(function () {
                         doSwap(k, j);
-                    }, 1000);
+                    }, j == 0 ? 3000 : 1000);
                 }
 
+                lastHeaderText = headerText;
                 header.text(headerText);
             }
 
