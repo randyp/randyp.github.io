@@ -54,6 +54,12 @@
         <text y="15">!!!Permutation viz goes here.!!!</text>
     </svg>
 
+    <script>
+        function setupPermutationViz(){
+
+        }
+    </script>
+
     <h2>Algorithm</h2>
 
     <p>The fisher-yates shuffle does this randomly swapping the last element e<sub>n</sub> with a random position, then
@@ -187,8 +193,7 @@
 
                 rect.attr("fill", function (d) {
                     var p = d.p.eval();
-                    var c = p == 0.0 ? 255 : 200 * (1 - p);
-                    return d3.rgb(c, c, c);
+                    return d3.hsl(d.row/n * 360, 0.8, 0.3 + 0.7*(1-p));
                 });
 
                 var text = cell.selectAll("text").data(function (d) {
@@ -268,7 +273,7 @@
                     svg.selectAll("g.cell").on("mouseover", function (d) {
                         if (d.p.eval() > 0) {
                             lastHeaderText = header.text();
-                            header.text("Element " + d.col + " will be shuffled to position " + d.row + " with p=" + d.p.toString());
+                            header.text("Element " + d.row + " will be shuffled to position " + d.col + " with p=" + d.p.toString());
                         }
                     }).on("mouseout", function (d) {
                         if (d.p.eval() > 0) {
