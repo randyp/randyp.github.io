@@ -13,6 +13,10 @@
             stroke: #aaa;
             stroke-width: 2px;
         }
+
+        * {
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -41,23 +45,187 @@
         </text>
     </svg>
 
-    <h2>Permutions, Matrices</h2>
+    <h2>Permutations</h2>
 
     <p>Another way to prove that a shuffle is random is show that every <a
-            href="https://en.wikipedia.org/wiki/Permutation_matrix">permutation matrix</a> is equally possible.</p>
+            href="https://en.wikipedia.org/wiki/Permutation">permutation</a> is equally possible as  a result of the shuffle.</p>
 
-    <p>A permutation is reordering of a list. For example, [3,2,4,5,1] is a permutation of [1,2,3,4,5].</p>
+    <p>A permutation is reordering of a list. For example, [2,1,3,4,0] is a permutation of [0,1,2,3,4].</p>
 
-    <p>A permutation matrix is a special matrix that tells us how to permute a list.</p>
-
-    <svg height="30px">
-        <text y="15">!!!Permutation viz goes here.!!!</text>
-    </svg>
+    <svg id="permutation-viz"></svg>
 
     <script>
-        function setupPermutationViz(){
+        (function () {
+            var permutation = [2, 1, 3, 4, 0],
+                    n = permutation.length,
+                    w = 250,
+                    h = 250,
+                    s = w / n;
 
-        }
+            var svg = d3.select("svg#permutation-viz").attr("width", w).attr("height", h);
+
+            var input = svg.selectAll("g.input").data(d3.range(n)).enter()
+                    .append("g")
+                    .attr("class", "input")
+                    .attr("transform", function (d) {
+                        return "translate(" + [d * s, 50-s/2] + ")";
+                    });
+
+            input.append("rect")
+                    .attr("width", s-2)
+                    .attr("height", s-2)
+                    .attr("transform", "translate(1,1)")
+                    .attr("fill", function(d){
+                        return d3.hsl(d / n * 360, 0.8, 0.5)
+                    });
+
+            input.append("text")
+                    .attr("text-anchor", "middle")
+                    .attr("transform", "translate(" + [s/2+5, s/2] + ")")
+                    .attr("fill", "#fff")
+                    .text(function(d){
+                        return d;
+                    });
+
+            input.append("line")
+                    .attr("y1", s + 10)
+                    .attr("y2", 115)
+                    .attr("x1", s/2)
+                    .attr("x2", function(d){
+                        return (permutation.indexOf(d) - d + 0.5) * s;
+                    })
+                    .style("stroke", function(d){
+                        return d3.hsl(d / n * 360, 0.8, 0.5)
+                    });
+
+            var output = svg.selectAll("g.output").data(permutation).enter()
+                    .append("g")
+                    .attr("class", "output")
+                    .attr("transform", function (d, i) {
+                        return "translate(" + [i * s, 175-s/2] + ")";
+                    });
+
+            output.append("rect")
+                    .attr("width", s-2)
+                    .attr("height", s-2)
+                    .attr("transform", "translate(1,1)")
+                    .attr("fill", function(d){
+                        return d3.hsl(d / n * 360, 0.8, 0.5)
+                    });
+
+            output.append("text")
+                    .attr("text-anchor", "middle")
+                    .attr("transform", "translate(" + [s/2+5, s/2] + ")")
+                    .attr("fill", "#fff")
+                    .text(function(d){
+                        return d;
+                    });
+        })();
+    </script>
+
+    <h2>Permutation Matrix</h2>
+
+    <p>Every permutation can be visualized as a special matrix called a <a href="https://en.wikipedia.org/wiki/Permutation_matrix">permutation matrix</a>.
+        The columns represent the original position of an element while the rows represent the permuted position of an element.
+        Only a single 1 entry per row or column is allowed, which signifies that the element at position <i>row</i> is
+        being moved to position <i>column</i>.</p>
+
+    <h3 id="permutation-matrix-viz-header"></h3>
+    <svg id="permutation-matrix-viz"></svg>
+
+    <script>
+        (function () {
+            var offset = 20,
+                    w = 300,
+                    h = w,
+                    permutation = [0, 2, 3, 1, 4],
+                    n = permutation.length,
+                    s = w / n,
+                    input = [];
+
+            var data = [];
+            var dataLookup = {};
+            for (var row = 0; row < n; row++) {
+                input.push(row);
+                for (var col = 0; col < n; col++) {
+                    var entry = {
+                        row: row,
+                        col: col,
+                        value: 0
+                    };
+                    dataLookup[[row, col]] = entry;
+                    data.push(entry);
+                }
+            }
+
+            function updateData() {
+                for (var row = 0; row < n; row++) {
+                    for (var col = 0; col < n; col++) {
+                        dataLookup[[row, col]].value = (row == permutation[col] ? 1 : 0 );
+                    }
+                }
+            }
+
+            updateData();
+
+            var svg = d3.select("svg#permutation-matrix-viz")
+                    .attr("width", w + offset)
+                    .attr("height", h + offset);
+            var cellgroup = svg.append("g").attr("transform", "translate(" + [offset, offset] + ")");
+            var topHighlightsGroup = svg.append("g").attr("transform", "translate(" + [offset, 0] + ")");
+            var leftHighlightsGroup = svg.append("g").attr("transform", "translate(" + [0, offset] + ")");
+
+
+            function draw() {
+                d3.select("h3#permutation-matrix-viz-header")
+                        .text("Represents permuting [" + input + "] to [" + permutation + "]");
+                var topHighlights = topHighlightsGroup.selectAll("rect").data(input);
+
+                topHighlights.enter().append("rect").attr("width", s - 2).attr("height", 7)
+                        .attr("transform", function (d, i) {
+                            return "translate(" + [i * s + 1, 0] + ")";
+                        });
+
+                topHighlights.attr("fill", function (d, i) {
+                    return d3.hsl(i / n * 360, 0.8, 0.5);
+                });
+
+                var leftHighlights = leftHighlightsGroup.selectAll("rect").data(input);
+
+                leftHighlights.enter().append("rect").attr("width", 7).attr("height", s - 2)
+                        .attr("transform", function (d, i) {
+                            return "translate(" + [0, i * s + 1] + ")";
+                        });
+
+                leftHighlights.attr("fill", function (d) {
+                    return d3.hsl(permutation.indexOf(d) / n * 360, 0.8, 0.5);
+                });
+
+                var cells = cellgroup.selectAll("rect").data(data);
+                cells.enter().append("rect")
+                        .attr("width", s - 2)
+                        .attr("height", s - 2)
+                        .attr("transform", function (d) {
+                            return "translate(" + [d.col * s + 1, d.row * s + 1] + ")";
+                        })
+                        .style("cursor", "pointer");
+
+                cells.attr("fill", function (d) {
+                    return d3.hsl(d.col / n * 360, 0.8, 1 - 0.5 * (d.value));
+                }).on("click", function (d) {
+                    if (d.value == 0) {
+                        var lastIndex = permutation.indexOf(d.row);
+                        permutation[lastIndex] = permutation[d.col];
+                        permutation[d.col] = d.row;
+                        updateData();
+                        draw();
+                    }
+                });
+
+            }
+
+            draw();
+        })();
     </script>
 
     <h2>Algorithm</h2>
@@ -138,7 +306,7 @@
             clearTimeout(lastTimeout);
             var n = document.getElementById("n").value;
 
-            var w = 500,
+            var w = 300,
                     highlightOffset = 30,
                     h = w + highlightOffset,
                     s = w / n;
@@ -193,7 +361,7 @@
 
                 rect.attr("fill", function (d) {
                     var p = d.p.eval();
-                    return d3.hsl(d.row/n * 360, 0.8, 0.3 + 0.7*(1-p));
+                    return d3.hsl(d.row / n * 360, 0.8, 1 - 0.5 * p);
                 });
 
                 var text = cell.selectAll("text").data(function (d) {
