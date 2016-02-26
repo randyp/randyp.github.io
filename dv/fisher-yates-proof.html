@@ -18,6 +18,7 @@
     <button onclick="vizualize()">Shuffle!</button>
 </div>
 <br>
+
 <h3 id="vis-header"></h3>
 <svg id="shuffle-viz">
 
@@ -44,8 +45,8 @@
             return new Fraction(newNum, newDenom);
         };
 
-        this.sub = function(otherFraction){
-            var newNum = this.num*otherFraction.denom - otherFraction.num*this.denom;
+        this.sub = function (otherFraction) {
+            var newNum = this.num * otherFraction.denom - otherFraction.num * this.denom;
             var newDenom = this.denom * otherFraction.denom;
             if (this.denom == otherFraction.denom) {
                 newNum = this.num - otherFraction.num;
@@ -78,40 +79,40 @@
         var w = 500,
                 s = w / n;
 
-        var columns = [];
-        for (var i = 0; i < n; i++) {
-            var column = [];
-            columns.push(column);
-            for (var j = 0; j < n; j++) {
-                column.push(i == j ? new Fraction(1, 1) : new Fraction(0, 1));
+        var data = [];
+        var dataLookup = {};
+        for (var row = 0; row < n; row++) {
+            for (var col = 0; col < n; col++) {
+                var entry = {row: row, col: col, p: (row == col ? new Fraction(1, 1) : new Fraction(0, 1))};
+                data.push(entry);
+                dataLookup[[row, col]] = entry;
             }
         }
+
 
         svg.selectAll("*").remove();
         svg.attr("width", w).attr("height", w);
 
-        var columnGroup = svg.selectAll("g")
-                .data(columns)
-                .enter()
-                .append("g")
-                .attr("transform", function (column, i) {
-                    return "translate(" + (i * s + 1) + ",0)";
-                });
+        function x(i) {
+            return i * s + 1;
+        }
 
+        function translate_cell(d) {
+            return "translate(" + [x(d.col), x(d.row)] + ")";
+        }
 
-        function draw() {
-            var cell = columnGroup.selectAll("g")
-                    .data(function (d, i) {
-                        return d;
-                    });
+        function draw(animatedK, animatedJ) {
+            var cell = svg.selectAll("g").data(data);
 
             cell.enter().append("g")
-                    .attr("transform", function (p, j) {
-                        return "translate(0," + (j * s + 1) + ")"
-                    });
+                    .attr("transform", translate_cell);
+
+            cell.style("opacity", function(d){
+                return d.p.eval() > 0 ? 1 : 0;
+            });
 
             var rect = cell.selectAll("rect").data(function (d) {
-                return [d]
+                return [d];
             });
 
             rect.enter().append("rect")
@@ -119,7 +120,7 @@
                     .attr("height", s - 2);
 
             rect.attr("fill", function (d) {
-                var p = d.eval();
+                var p = d.p.eval();
                 var c = p == 0.0 ? 255 : 200 * (1 - p);
                 return d3.rgb(c, c, c);
             });
@@ -131,51 +132,74 @@
             text.enter().append("text")
                     .attr("text-anchor", "middle")
                     .attr("fill", "#ffffff")
-                    .attr("x", s/2)
-                    .attr("y", s/2);
+                    .attr("x", s / 2)
+                    .attr("y", s / 2);
 
             text.text(function (d) {
-                return d.toString()
+                return d.p.toString();
             });
+
+            if (typeof animatedK !== 'undefined' && typeof animatedJ !== 'undefined') {
+                {
+                    var movedFromLast = cell.filter(function (d) {
+                        return d.row == animatedK && d.col == animatedJ;
+                    });
+                    movedFromLast.attr("transform", function () {
+                        return "translate(" + [x(animatedK), x(animatedK)] + ")";
+                    }).transition().duration(400)
+                            .attr("transform", translate_cell);
+                }
+                {
+                    var movedFromCurrent = cell.filter(function (d) {
+                        return d.col == animatedK && d.row == animatedJ;
+                    });
+                    movedFromCurrent.attr("transform", function () {
+                        return "translate(" + [x(animatedJ), x(animatedJ)] + ")";
+                    }).transition().duration(400).attr("transform", translate_cell);
+                }
+            }
         }
 
         header.text("Probabilities Before shuffle (each element only at its original position)");
         draw();
 
         function doSwap(k, j) {
-            if(typeof j === 'undefined'){
-                j = 0;
-            }
+
             var headerText;
-            if(k > 1){
-                headerText = "Probabilities i=" + k;
-            }else{
+            if(k == 1){
                 headerText = "Probabilities when shuffled";
+            }else if (k > 1) {
+                headerText = "Probabilities if we swap(" + [k,j]+")";
+            } else {
+
             }
             header.text(headerText);
-            var m = k + 1;
-            var p = new Fraction(1, m);
-            var cp = new Fraction(k, m);
-            var rn = new Fraction(1, n);
-            columns[k][j] = columns[j][j].mult(p);
-            columns[j][k] = columns[k][j];
-            columns[j][j] = columns[j][j].mult(cp);
-            columns[k][k] = columns[k][k].sub(rn);
-            draw();
-            if (k > 1) {
-                j++;
-                if(j == k){
-                    j = 0;
-                    k-=1;
+
+            if(k > 0){
+                var m = k + 1;
+                var p = new Fraction(1, m);
+                var cp = new Fraction(k, m);
+                var rn = new Fraction(1, n);
+                dataLookup[[k, j]].p = dataLookup[[j, j]].p.mult(p);
+                dataLookup[[j, k]].p = dataLookup[[k, j]].p;
+                dataLookup[[j, j]].p = dataLookup[[j, j]].p.mult(cp);
+                dataLookup[[k, k]].p = dataLookup[[k, k]].p.sub(rn);
+                draw(k, j);
+                if (k > 1) {
+                    j++;
+                    if (j == k) {
+                        j = 0;
+                        k -= 1;
+                    }
+                    lastTimeout = setTimeout(function () {
+                        doSwap(k, j);
+                    }, 500);
                 }
-                lastTimeout = setTimeout(function () {
-                    doSwap(k, j);
-                }, 500);
             }
         }
 
         lastTimeout = setTimeout(function () {
-            doSwap(n - 1)
+            doSwap(n - 1, 0)
         }, 2000);
     }
 </script>
