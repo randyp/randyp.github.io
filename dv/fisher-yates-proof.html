@@ -242,8 +242,7 @@
 
     <h2>Algorithm</h2>
 
-    <p>The fisher-yates shuffle does this randomly swapping the last element e<sub>n</sub> with a random position, then
-        recursing on the sublist up to but not including the last position.</p>
+    <p>The fisher-yates algorithm shuffles by swapping the elements e<sub>n</sub> and e<sub>i</sub>. </p>
 
     <svg id="recurse-viz" height="30px">
         <text y="15">!!!Recursion viz goes here.!!!</text>
@@ -318,7 +317,7 @@
             clearTimeout(lastTimeout);
             var n = document.getElementById("n").value;
 
-            var w = 300,
+            var w = 500,
                     highlightOffset = 30,
                     h = w,
                     s = w / n;
