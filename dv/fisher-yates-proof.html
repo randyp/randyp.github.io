@@ -6,186 +6,250 @@
 
     <title>randyp</title>
     <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <link crossorigin="anonymous" href="../css/index.css" media="all" rel="stylesheet">
+
+    <style>
+        line {
+            stroke: #aaa;
+            stroke-width: 2px;
+        }
+    </style>
 </head>
 <body>
-<h2>Visual proof of Fisher Yates Shuffle</h2>
+<div style="max-width:800px; margin: 0 auto">
+    <h1 style="text-align: center">Visual Proof of Fisher-Yates Shuffle</h1>
 
-<p>Columns represent original positions of elements, rows represent shuffled positions of elements, and </p>
+    <p><a href="https://bost.ocks.org/mike/shuffle/">I have found great visualization</a> of the <a
+            href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm">fisher-yates
+        shuffling algorithm</a>, but have yet to find a great <b>visualization of the proof</b> that the fisher-yates
+        shuffle is <i>random</i>.</p>
 
-<p>The density at (i,j) represents the probability of e<sub>j</sub> being shuffled to position i</p>
+    <p>What do we mean by <i>random</i>? One way to proof shuffle is (uniformly) random is to show that every element
+        has equal probability of being shuffled to every position, including the original position.</p>
 
-<div><label>n:</label><input id="n" type="text" value="5">
-    <button onclick="vizualize()">Shuffle!</button>
-</div>
-<br>
+    <svg width="800px" height="120px" viewBox="0 0 800 120">
+        <text x="400" y="20" text-anchor="middle">e0, ..., ei, ..., en</text>
+        <line x1="395" y1="25" x2="260" y2="85"></line>
+        <line x1="395" y1="25" x2="310" y2="85"></line>
+        <line x1="395" y1="25" x2="354" y2="85"></line>
+        <line x1="395" y1="25" x2="390" y2="85"></line>
+        <line x1="395" y1="25" x2="460" y2="85"></line>
+        <line x1="395" y1="25" x2="540" y2="85"></line>
+        <text x="500" y="60" text-anchor="start">p(i->j) = 1/n</text>
+        <text x="400" y="100" text-anchor="middle">position 0, position 1, ..., position j, ..., position n-2, position
+            n-1
+        </text>
+    </svg>
 
-<h3 id="vis-header"></h3>
-<svg id="shuffle-viz">
+    <h2>Permutions, Matrices</h2>
 
-</svg>
-<script type="text/javascript">
-    var header = d3.select("h3#vis-header");
-    var svg = d3.select("svg#shuffle-viz");
-    var lastTimeout;
+    <p>Another way to proof that a shuffle is random is show that every <a
+            href="https://en.wikipedia.org/wiki/Permutation_matrix">permutation matrix</a> is equally possible.</p>
 
-    function Fraction(num, denom) {
-        this.num = num;
-        this.denom = denom;
+    <p>A permutation is reordering of a list. For example, [3,2,4,5,1] is a permutation of [1,2,3,4,5].</p>
 
-        this.mult = function (otherFraction) {
-            var newNum = this.num * otherFraction.num;
-            var newDenom = this.denom * otherFraction.denom;
-            if (this.num == otherFraction.denom) {
-                newNum = otherFraction.num;
-                newDenom = this.denom;
-            } else if (this.denom == otherFraction.num) {
-                newNum = this.num;
-                newDenom = otherFraction.denom;
-            }
-            return new Fraction(newNum, newDenom);
+    <p>A permutation matrix is a special matrix that tells us how to permute a list.</p>
+
+    <svg height="30px">
+        <text y="15">!!!Permutation viz goes here.!!!</text>
+    </svg>
+
+    <h2>Algorithm</h2>
+
+    <p>The fisher-yates shuffle does this randomly swapping the last element e<sub>n</sub> with a random position, then
+        recursing on the sublist up to but not including the last position.</p>
+
+    <svg id="recurse-viz" height="30px">
+        <text y="15">!!!Recursion viz goes here.!!!</text>
+    </svg>
+
+    <h2>The Proof</h2>
+
+    <div>
+        <label>n:</label> <input id="n" type="text" value="5">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button onclick="startShuffleViz()">Shuffle!</button>
+    </div>
+    <br>
+
+    <h3 id="proof-viz-header"></h3>
+    <svg id="proof-viz">
+
+    </svg>
+    <script type="text/javascript">
+        var header = d3.select("h3#proof-viz-header");
+        var svg = d3.select("svg#proof-viz");
+        var lastTimeout;
+        var startShuffleViz = function () {
+
         };
 
-        this.sub = function (otherFraction) {
-            var newNum = this.num * otherFraction.denom - otherFraction.num * this.denom;
-            var newDenom = this.denom * otherFraction.denom;
-            if (this.denom == otherFraction.denom) {
-                newNum = this.num - otherFraction.num;
-                newDenom = this.denom;
-            }
-            return new Fraction(newNum, newDenom);
-        };
+        function Fraction(num, denom) {
+            this.num = num;
+            this.denom = denom;
 
-        this.eval = function () {
-            return this.num / this.denom;
-        };
+            this.mult = function (otherFraction) {
+                var newNum = this.num * otherFraction.num;
+                var newDenom = this.denom * otherFraction.denom;
+                if (this.num == otherFraction.denom) {
+                    newNum = otherFraction.num;
+                    newDenom = this.denom;
+                } else if (this.denom == otherFraction.num) {
+                    newNum = this.num;
+                    newDenom = otherFraction.denom;
+                }
+                return new Fraction(newNum, newDenom);
+            };
 
-        this.toString = function () {
-            var toReturn = this.num + "/" + this.denom;
-            if (this.num == 0) {
-                toReturn = "0";
-            } else if (this.num == 1 && this.denom == 1) {
-                toReturn = "1";
-            }
-            return toReturn;
-        };
-        return this;
-    }
+            this.sub = function (otherFraction) {
+                var newNum = this.num * otherFraction.denom - otherFraction.num * this.denom;
+                var newDenom = this.denom * otherFraction.denom;
+                if (this.denom == otherFraction.denom) {
+                    newNum = this.num - otherFraction.num;
+                    newDenom = this.denom;
+                }
+                return new Fraction(newNum, newDenom);
+            };
 
-    function vizualize() {
-        clearTimeout(lastTimeout);
+            this.eval = function () {
+                return this.num / this.denom;
+            };
 
-        var n = document.getElementById("n").value;
-
-        var w = 500,
-                s = w / n;
-
-        var data = [];
-        var dataLookup = {};
-        for (var row = 0; row < n; row++) {
-            for (var col = 0; col < n; col++) {
-                var entry = {row: row, col: col, p: (row == col ? new Fraction(1, 1) : new Fraction(0, 1))};
-                data.push(entry);
-                dataLookup[[row, col]] = entry;
-            }
+            this.toString = function () {
+                var toReturn = this.num + "/" + this.denom;
+                if (this.num == 0) {
+                    toReturn = "0";
+                } else if (this.num == 1 && this.denom == 1) {
+                    toReturn = "1";
+                }
+                return toReturn;
+            };
+            return this;
         }
 
+        function setupVisualizeShuffle() {
+            clearTimeout(lastTimeout);
+            var n = document.getElementById("n").value;
 
-        svg.selectAll("*").remove();
-        svg.attr("width", w).attr("height", w);
+            var w = 500,
+                    highlightOffset = 30,
+                    h = w + highlightOffset,
+                    s = w / n;
 
-        function x(i) {
-            return i * s + 1;
-        }
+            var data = [];
+            var dataLookup = {};
+            for (var row = 0; row < n; row++) {
+                for (var col = 0; col < n; col++) {
+                    var entry = {row: row, col: col, p: (row == col ? new Fraction(1, 1) : new Fraction(0, 1))};
+                    data.push(entry);
+                    dataLookup[[row, col]] = entry;
+                }
+            }
 
-        function translate_cell(d) {
-            return "translate(" + [x(d.col), x(d.row)] + ")";
-        }
 
-        function draw(animatedK, animatedJ) {
-            var cell = svg.selectAll("g").data(data);
+            svg.selectAll("*").remove();
+            svg.attr("width", w).attr("height", h);
 
-            cell.enter().append("g")
-                    .attr("transform", translate_cell);
+            function x(i) {
+                return i * s + 1;
+            }
 
-            cell.style("opacity", function(d){
-                return d.p.eval() > 0 ? 1 : 0;
-            });
+            function translate_cell(d) {
+                return translate(d.row, d.col);
+            }
 
-            var rect = cell.selectAll("rect").data(function (d) {
-                return [d];
-            });
+            function translate(row, col) {
+                return "translate(" + [x(col), x(row) + highlightOffset] + ")"
+            }
 
-            rect.enter().append("rect")
-                    .attr("width", s - 2)
-                    .attr("height", s - 2);
+            function draw(animatedK, animatedJ) {
+                var cell = svg.selectAll("g.cell").data(data);
 
-            rect.attr("fill", function (d) {
-                var p = d.p.eval();
-                var c = p == 0.0 ? 255 : 200 * (1 - p);
-                return d3.rgb(c, c, c);
-            });
+                cell.enter().append("g")
+                        .attr("class", "cell")
+                        .attr("transform", translate_cell);
 
-            var text = cell.selectAll("text").data(function (d) {
-                return [d];
-            });
+                cell.style("opacity", function (d) {
+                    return d.p.eval() > 0 ? 1 : 0;
+                });
 
-            text.enter().append("text")
-                    .attr("text-anchor", "middle")
-                    .attr("fill", "#ffffff")
-                    .attr("x", s / 2)
-                    .attr("y", s / 2 + 5);
+                var rect = cell.selectAll("rect").data(function (d) {
+                    return [d];
+                });
 
-            text.text(function (d) {
-                return d.p.toString();
-            });
+                rect.enter().append("rect")
+                        .attr("width", s - 2)
+                        .attr("height", s - 2);
 
-            if (typeof animatedK !== 'undefined' && typeof animatedJ !== 'undefined') {
-                {
+                rect.attr("fill", function (d) {
+                    var p = d.p.eval();
+                    var c = p == 0.0 ? 255 : 200 * (1 - p);
+                    return d3.rgb(c, c, c);
+                });
+
+                var text = cell.selectAll("text").data(function (d) {
+                    return [d];
+                });
+
+                text.enter().append("text")
+                        .attr("text-anchor", "middle")
+                        .attr("fill", "#ffffff")
+                        .attr("x", s / 2)
+                        .attr("y", s / 2 + 5);
+
+                text.text(function (d) {
+                    return d.p.toString();
+                });
+
+
+                var highlights = svg.selectAll("rect.highlight").data([0, 1]);
+                highlights.enter()
+                        .append("rect")
+                        .attr("class", "highlight")
+                        .attr("width", s - 2)
+                        .attr("height", 10)
+                        .attr("fill", "#f00")
+                        .style("opacity", 0);
+
+                if (typeof animatedK !== 'undefined' && typeof animatedJ !== 'undefined') {
                     var movedFromLast = cell.filter(function (d) {
                         return d.row == animatedK && d.col == animatedJ;
                     });
                     movedFromLast.attr("transform", function () {
-                        return "translate(" + [x(animatedK), x(animatedK)] + ")";
-                    }).transition().duration(400)
+                        return translate(animatedK, animatedK);
+                    }).transition().duration(1000)
                             .attr("transform", translate_cell);
-                }
-                {
                     var movedFromCurrent = cell.filter(function (d) {
                         return d.col == animatedK && d.row == animatedJ;
                     });
                     movedFromCurrent.attr("transform", function () {
-                        return "translate(" + [x(animatedJ), x(animatedJ)] + ")";
-                    }).transition().duration(400).attr("transform", translate_cell);
+                        return translate(animatedJ, animatedJ);
+                    }).transition().duration(1000).attr("transform", translate_cell);
+
+                    highlights.attr("transform", function (d) {
+                        var pos = d ? animatedK : animatedJ;
+                        return "translate(" + [x(pos), 10] + ")"
+                    }).transition().duration(350).style("opacity", 1)
+                            .transition().duration(350).style("opacity", 0);
                 }
             }
-        }
 
-        header.text("Probabilities Before shuffle (each element only at its original position)");
-        draw();
+            header.text("Probabilities Before shuffle (each element at its original position)");
+            draw();
 
-        function doSwap(k, j) {
-
-            var headerText;
-            if(k == 1){
-                headerText = "Probabilities when shuffled";
-            }else if (k > 1) {
-                headerText = "Probabilities if we swapped (" + [k,j]+")";
-            } else {
-
-            }
-            header.text(headerText);
-
-            if(k > 0){
-                var m = k + 1;
-                var p = new Fraction(1, m);
-                var cp = new Fraction(k, m);
-                var rn = new Fraction(1, n);
-                dataLookup[[k, j]].p = dataLookup[[j, j]].p.mult(p);
-                dataLookup[[j, k]].p = dataLookup[[k, j]].p;
-                dataLookup[[j, j]].p = dataLookup[[j, j]].p.mult(cp);
-                dataLookup[[k, k]].p = dataLookup[[k, k]].p.sub(rn);
-                draw(k, j);
-                if (k > 1) {
+            function doSwap(k, j) {
+                var headerText = "Probabilities when shuffled";
+                if (k > 0) {
+                    var m = k + 1;
+                    var p = new Fraction(1, m);
+                    var cp = new Fraction(k, m);
+                    var rn = new Fraction(1, n);
+                    dataLookup[[k, j]].p = dataLookup[[j, j]].p.mult(p);
+                    dataLookup[[j, k]].p = dataLookup[[k, j]].p;
+                    dataLookup[[j, j]].p = dataLookup[[j, j]].p.mult(cp);
+                    dataLookup[[k, k]].p = dataLookup[[k, k]].p.sub(rn);
+                    headerText = "Probabilities if we swap(" + [k, j] + ") with p=" + p;
+                    draw(k, j);
                     j++;
                     if (j == k) {
                         j = 0;
@@ -193,15 +257,22 @@
                     }
                     lastTimeout = setTimeout(function () {
                         doSwap(k, j);
-                    }, 500);
+                    }, 1000);
                 }
+
+                header.text(headerText);
             }
+
+            startShuffleViz = function () {
+                setupVisualizeShuffle();
+                doSwap(n - 1, 0);
+            };
         }
 
-        lastTimeout = setTimeout(function () {
-            doSwap(n - 1, 0)
-        }, 2000);
-    }
-</script>
+        d3.select("input#n").on("input", setupVisualizeShuffle);
+
+        setupVisualizeShuffle();
+    </script>
+</div>
 </body>
 </html>
