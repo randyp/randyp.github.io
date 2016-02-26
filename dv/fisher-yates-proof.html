@@ -51,6 +51,7 @@
         a random position i, then repeat on elements from e<sub>0</sub> to e<sub>n-1</sub>. In software we call
         those remaining elements the sublist from 0 to n-1.</p>
 
+    <h3>&nbsp;<span id="algorithm-viz-header"></span></h3>
     <svg id="algorithm-viz">
 
     </svg>
@@ -73,6 +74,8 @@
                 element.enter().append("g").attr("transform", function (d, i) {
                     return "translate(" + [i * s, 0] + ")";
                 });
+
+                element.style("opacity", 1);
 
                 var elementRect = element.selectAll("rect").data(function (d) {
                     return [d]
@@ -102,6 +105,11 @@
                 });
 
                 if (typeof iteration !== 'undefined' && typeof swapIndex !== 'undefined') {
+                    d3.select("h3 span#algorithm-viz-header")
+                            .text("swap(" + [swapIndex, iteration] + ")")
+                            .transition()
+                            .delay(750)
+                            .text("");
                     element.filter(function (d, i) {
                         return i > iteration;
                     }).style("opacity", 0.3);
