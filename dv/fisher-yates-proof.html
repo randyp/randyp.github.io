@@ -247,12 +247,13 @@
         a random position i, then recursing on all elements from e<sub>0</sub> to e<sub>n-1</sub>. In software we call
         those remaining elements the sublist from 0 to n-1.</p>
 
+    <h3>The permutation [3, 2, 1, 4, 0] is the result of swap(0,4), swap(0,3), swap(1,2), swap(1,1) </h3>
     <svg id="algorithm-viz">
 
     </svg>
     <script>
         (function () {
-            var permutation = [3, 2, 1, 4, 0],//swap(0,4) [4,1,2,3,0]  //swap(0,3) [3,1,2,4,0] //swap (2, 2) [3,2,1,4,0]
+            var permutation = [3, 2, 1, 4, 0],//swap(0,4) [4,1,2,3,0]  //swap(0,3) [3,1,2,4,0] //swap (2, 1) [3,2,1,4,0]
                     n = permutation.length,
                     w = 300,
                     s = w / n,
