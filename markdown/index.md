@@ -18,4 +18,4 @@ Here is my [Online Resume](http://github.com/randyp/resume), which has some info
 
 ### Articles
 * [Please Do Not Feed The Code Monkey](please-do-not-feed-the-code-monkey.html)
-* [Fisher-Yates Shuffle Visual Proof](dv/fisher-yates-proof.html)
+* [Visual Proof of Fisher-Yates Shuffle](dv/fisher-yates-proof.html)
