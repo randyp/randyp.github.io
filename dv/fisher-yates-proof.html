@@ -28,7 +28,7 @@
         shuffling algorithm</a>, but have yet to find a great <b>visualization of the proof</b> that the fisher-yates
         shuffle is <i>random</i>.</p>
 
-    <p>What do we mean by <i>random</i>? One way to proove a shuffle is (uniformly) random is to show that every element
+    <p>What do we mean by <i>random</i>? One way to prove a shuffle is (uniformly) random is to show that every element
         has equal probability of being shuffled to every position, including the original position.</p>
 
     <svg width="800px" height="120px" viewBox="0 0 800 120">
@@ -47,11 +47,13 @@
 
     <h2>Algorithm</h2>
 
-    <p>While it may not be obvious, he fisher-yates algorithm accomplishes a random shuffle with the following steps:
-        swap the last element, e<sub>n</sub>, with the element e<sub>i</sub> at
-        a random position i, then repeat on elements from e<sub>0</sub> to e<sub>n-1</sub>. In software we call
-        those remaining elements the sublist from 0 to n-1.</p>
-
+    <p>While it may not be obvious, the fisher-yates algorithm accomplishes a random shuffle with the following steps:</p>
+    <ol>
+        <li>swap the last element, e<sub>n</sub>, with the element e<sub>i</sub> at a random position i</li>
+        <li>repeat on elements from e<sub>0</sub> to e<sub>n-1</sub>. In software we call
+            those remaining elements the sublist from 0 to n-1
+        </li>
+    </ol>
     <h3>&nbsp;<span id="algorithm-viz-header"></span></h3>
     <svg id="algorithm-viz">
 
@@ -69,6 +71,7 @@
             var svg = d3.select("svg#algorithm-viz").attr("width", w).attr("height", h);
 
             var elementsGroup = svg.append("g").attr("transform", "translate(" + [0, s * 1.1] + ")");
+            var headerText = "";
 
             function draw(iteration, swapIndex) {
                 var element = elementsGroup.selectAll("g").data(data);
@@ -106,11 +109,9 @@
                 });
 
                 if (typeof iteration !== 'undefined' && typeof swapIndex !== 'undefined') {
+                    headerText += " swap(" + [swapIndex, iteration] + ")";
                     d3.select("h3 span#algorithm-viz-header")
-                            .text("swap(" + [swapIndex, iteration] + ")")
-                            .transition()
-                            .delay(750)
-                            .text("");
+                            .text(headerText);
                     element.filter(function (d, i) {
                         return i > iteration;
                     }).style("opacity", 0.3);
@@ -167,6 +168,8 @@
             }
 
             function start() {
+                d3.select("h3 span#algorithm-viz-header").text("");
+                headerText = "";
                 data = d3.range(n);
                 draw();
                 setTimeout(function () {
@@ -181,8 +184,10 @@
     <h2>First Proof</h2>
 
     <p>In the visualization above, we are only demonstrating one possible shuffle. What if we considered all swaps
-        and kept track of the possibility each element was in each position? If a shuffle was truly random then each <i>element</i>
+        and kept track of the probability each element was in each position? If a shuffle was truly random then each <i>element</i>
         (color) should occur in each position equally.</p>
+
+    <p>In the visualization below, we highlight two position before considering the swap, </p>
 
     <h3 id="swaps-viz-header"></h3>
     <svg id="swaps-viz"></svg>
@@ -246,12 +251,10 @@
                 function cleanupHistory(history) {
                     history.forEach(function (position) {
                         position.forEach(function (entry, i) {
-                            if (i == 0) {
-                                entry.cp = entry.p;
-                            } else {
-                                entry.cp = entry.p + position[i - 1].cp;
+                            entry.cp = entry.p;
+                            if (i > 0) {
+                                entry.cp += position[i - 1].cp;
                             }
-
                         });
                     });
                 }
@@ -268,14 +271,16 @@
                             p: e.p * (1 - p),
                             source: swapIndex,
                             target: swapIndex,
-                            lastMultP : (1 - p)
+                            lastMultP: (1 - p),
+                            lastCp: e.cp - e.p
                         });
                         fromSwapToLoop.push({
                             e: e.e,
                             p: e.p * p,
                             source: swapIndex,
                             target: loop,
-                            lastMultP : p
+                            lastMultP: p,
+                            lastCp: e.cp - e.p
                         });
                     });
                     lastSwapHistory[loop].forEach(function (e) {
@@ -284,7 +289,8 @@
                             p: e.p * p,
                             source: loop,
                             target: swapIndex,
-                            lastMultP : p
+                            lastMultP: p,
+                            lastCp: e.cp - e.p
                         })
                     });
                     if (swapIndex < loop) {
@@ -347,7 +353,7 @@
                             })
                             .attr("height", s - 2)
                             .attr("transform", function (d) {
-                                return "translate(" + [(d.source - d.target + d.cp - d.p) * s, -1.1 * s + 1] + ")  scale(" + [1/ d.lastMultP, 1] + ")";
+                                return "translate(" + [(d.source - d.target + d.lastCp) * s + 1, -1.1 * s + 1] + ")  scale(" + [1 / d.lastMultP, 1] + ")";
                             })
                             .transition()
                             .duration(1000)
@@ -413,7 +419,7 @@
 
                 setTimeout(function () {
                     swap(n - 1, 0);
-                }, 5000);
+                }, 1000);
             }
 
             start();
