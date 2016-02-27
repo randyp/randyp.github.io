@@ -47,7 +47,8 @@
 
     <h2>Algorithm</h2>
 
-    <p>While it may not be obvious, he fisher-yates algorithm accomplishes a random shuffle with the following steps: swap the last element, e<sub>n</sub>, with the element e<sub>i</sub> at
+    <p>While it may not be obvious, he fisher-yates algorithm accomplishes a random shuffle with the following steps:
+        swap the last element, e<sub>n</sub>, with the element e<sub>i</sub> at
         a random position i, then repeat on elements from e<sub>0</sub> to e<sub>n-1</sub>. In software we call
         those remaining elements the sublist from 0 to n-1.</p>
 
@@ -117,7 +118,7 @@
                     var lastElement = element.filter(function (d, i) {
                         return i == iteration;
                     });
-                    if(iteration != swapIndex){
+                    if (iteration != swapIndex) {
                         lastElement.attr("transform", "translate(" + [swapIndex * s, 0] + ")")
                                 .transition()
                                 .attr("transform", "translate(" + [swapIndex * s, -s * 1.1] + ")")
@@ -136,7 +137,7 @@
                                 .attr("transform", "translate(" + [swapIndex * s, s * 1.1] + ")")
                                 .transition()
                                 .attr("transform", "translate(" + [swapIndex * s, 0] + ")");
-                    }else{
+                    } else {
                         lastElement.style("opacity", 0.3);
                     }
                 }
@@ -177,7 +178,231 @@
         })();
     </script>
 
-    <h2>Permutations</h2>
+    <h2>First Proof</h2>
+
+    <p>In the visualization above, we are only considering one possible shuffle. What if we considered all swaps
+        and kept track of the possibility each element was in each position? If a shuffle was truly random then each <i>element</i> (color) should occur in each position equally.</p>
+
+    <h3 id="swaps-viz-header"></h3>
+    <svg id="swaps-viz"></svg>
+    <script>
+        (function () {
+            var w = 500,
+                    offset = 30,
+                    n = 5,
+                    s = w / n,
+                    h = s * (n + 2);
+            var svg = d3.select("svg#swaps-viz").attr("width", 1024).attr("height", h);
+
+
+            function start() {
+                svg.selectAll("*").remove();
+                var drawRoot = svg.append("g").attr("transform", "translate(0, " + offset + ")");
+
+                var element = drawRoot.selectAll("g")
+                        .data(d3.range(n))
+                        .enter()
+                        .append("g")
+                        .attr("transform", function (d) {
+                            return "translate(" + [d * s + 1, 0] + ")";
+                        });
+
+                element.selectAll("rect").data(function (d) {
+                    return [d]
+                }).enter().append("rect")
+                        .attr("width", s - 2)
+                        .attr("height", s - 2)
+                        .attr("transform", "translate(1,1)")
+                        .attr("fill", function (d) {
+                            return d3.hsl((d / n) * 360, 0.8, 0.5);
+                        });
+
+                element.selectAll("text").data(function (d) {
+                    return [d]
+                }).enter().append("text")
+                        .attr("text-anchor", "middle")
+                        .attr("transform", "translate(" + [s / 2, s / 2 + 5] + ")")
+                        .attr("fill", "#fff")
+                        .text(function (d) {
+                            return d
+                        });
+
+
+                function emptyHistory(n){
+                    var toReturn = [];
+                    for (var i = 0; i < n; i++) {
+                        toReturn.push([]);
+                    }
+                    return toReturn;
+                }
+
+                var lastSwapHistory = [];
+                for (var i = 0; i < n; i++) {
+                    lastSwapHistory.push([{e: i, p: 1.0, cp: 1.0}]);
+                }
+                var swapHistory = emptyHistory(n);
+
+                function cleanupHistory(history){
+                    history.forEach(function(position){
+                       position.forEach(function(entry, i){
+                           if(i == 0){
+                               entry.cp = entry.p;
+                           }else{
+                               entry.cp = entry.p + position[i-1].cp;
+                           }
+
+                       });
+                    });
+                }
+
+                var histories = [swapHistory];
+                function swap(loop, swapIndex) {
+                    var p = 1 / (loop + 1);
+
+                    var fromSwapToSwap = [], fromSwapToLoop = [], fromLoopToSwap = [];
+                    lastSwapHistory[swapIndex].forEach(function (e) {
+                        fromSwapToSwap.push({
+                            e : e.e,
+                            p : e.p * (1-p)
+                        });
+                        fromSwapToLoop.push({
+                            e : e.e,
+                            p : e.p * p
+                        });
+                    });
+                    lastSwapHistory[loop].forEach(function (e) {
+                        fromLoopToSwap.push({
+                            e : e.e,
+                            p : e.p * p
+                        })
+                    });
+                    if(swapIndex < loop){
+                        swapHistory[swapIndex].push.apply(swapHistory[swapIndex], fromSwapToSwap);
+                        swapHistory[swapIndex].push.apply(swapHistory[swapIndex], fromLoopToSwap);
+                    }
+                    swapHistory[loop].push.apply(swapHistory[loop], fromSwapToLoop);
+
+                    cleanupHistory(swapHistory);
+
+                    svg.selectAll("rect.highlight" + loop + "_" + swapIndex)
+                            .data([0, 1]).enter()
+                            .append("rect")
+                            .attr("width", s - 2)
+                            .attr("height", offset / 3)
+                            .attr("fill", function (d) {
+                                var index = ( d == 0 ? swapIndex : loop );
+                                return d3.hsl((index / n) * 360, 0.8, 0.5);
+                            }).attr("transform", function (d) {
+                                var index = ( d == 0 ? swapIndex : loop );
+                                return "translate(" + (index * s + 1) + ", 0)";
+                            }).transition()
+                            .duration(500)
+                            .style("opacity", "0")
+                            .remove();
+
+                    var loopGroup = drawRoot.selectAll("g.loop").data(histories);
+                    loopGroup.enter().append("g")
+                            .attr("class", function(d, i){
+                                return "loop loop" + (n - 1 - i);
+                            })
+                            .attr("transform", function(d,i){
+                                return "translate(0," + ((i + 1) * 1.1 * s) + ")";
+                            });
+
+                    var position = loopGroup.selectAll("g.position").data(function(d){return d});
+                    position.enter().append("g")
+                            .attr("class", function(d,i){
+                                return "position position" + i;
+                            })
+                            .attr("transform", function(d,i){
+                                return "translate(" + (i * s) +",0)";
+                            });
+
+                    var swapProb = position.selectAll("rect.swapProb").data(function (d) {
+                        return d
+                    });
+
+                    swapProb.enter()
+                            .append("rect")
+                            .attr("class", "swapProb")
+                            .attr("fill", function (d) {
+                                return d3.hsl((d.e / n) * 360, 0.8, 0.5)
+                            })
+                            .attr("width", function (d) {
+                                return d.p * (s - 2)
+                            })
+                            .attr("height", s - 2)
+                            .attr("transform", function (d) {
+                                var x = (d.cp - d.p) * (s-2) + 1;
+                                return "translate(" + x + ",1)";
+                            });
+
+                    var done = loop == 0;
+                    if(loop > 0){
+                        if (swapIndex >= loop) {
+                            lastSwapHistory = swapHistory;
+                            swapHistory = emptyHistory(loop);
+                            histories.push(swapHistory);
+                            loop -= 1;
+                            swapIndex = 0;
+                        }else{
+                            swapIndex+=1;
+                        }
+                    }
+                    if (!done) {
+                        setTimeout(function () {
+                            swap(loop, swapIndex);
+                        }, 500);
+                    }else{
+                        histories.forEach(function(history){
+                           history.forEach(function(position){
+                               position.sort(function(l,r){
+                                   return l.e - r.e;
+                               });
+                           });
+                            cleanupHistory(history);
+                        });
+                        console.log(histories);
+                        swapProb.transition()
+                                .delay(1000)
+                                .duration(1000)
+                                .attr("transform", function (d) {
+                                    var x = (d.cp - d.p) * (s-2) + 1;
+                                    return "translate(" + x + ",1)";
+                                });
+
+                        element.transition()
+                                .delay(3000)
+                                .duration(1000)
+                                .style("opacity", 0);
+
+                        for(var loopI = 0; loopI < n; loopI++){
+                            drawRoot.selectAll("g.loop" + loopI + " g.position")
+                                    .filter(function(d,i){
+                                        return i < loopI;
+                                    }).transition()
+                                    .delay(3000)
+                                    .duration(1000)
+                                    .style("opacity", 0);
+                        }
+
+                        loopGroup.transition().delay(3000).duration(1000).attr("transform", "translate(0,0)");
+
+                        drawRoot.transition().delay(9000).duration(1000).style("opacity", 0);
+
+                        setTimeout(start, 10000);
+                    }
+                }
+
+                setTimeout(function () {
+                    swap(n - 1, 0);
+                }, 3000);
+            }
+            start();
+        })();
+    </script>
+
+    <!-- <h2>Permutations</h2>
 
     <p>Another way to prove that a shuffle is random is show that every <a
             href="https://en.wikipedia.org/wiki/Permutation">permutation</a> is equally possible as a result of the
@@ -606,7 +831,7 @@
         d3.select("input#n").on("input", setupVisualizeShuffle);
 
         setupVisualizeShuffle();
-    </script>
+    </script> -->
 </div>
 </body>
 </html>
