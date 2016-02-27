@@ -180,14 +180,15 @@
 
     <h2>First Proof</h2>
 
-    <p>In the visualization above, we are only considering one possible shuffle. What if we considered all swaps
-        and kept track of the possibility each element was in each position? If a shuffle was truly random then each <i>element</i> (color) should occur in each position equally.</p>
+    <p>In the visualization above, we are only demonstrating one possible shuffle. What if we considered all swaps
+        and kept track of the possibility each element was in each position? If a shuffle was truly random then each <i>element</i>
+        (color) should occur in each position equally.</p>
 
     <h3 id="swaps-viz-header"></h3>
     <svg id="swaps-viz"></svg>
     <script>
         (function () {
-            var w = 500,
+            var w = 300,
                     offset = 30,
                     n = 5,
                     s = w / n,
@@ -228,7 +229,7 @@
                         });
 
 
-                function emptyHistory(n){
+                function emptyHistory(n) {
                     var toReturn = [];
                     for (var i = 0; i < n; i++) {
                         toReturn.push([]);
@@ -242,41 +243,51 @@
                 }
                 var swapHistory = emptyHistory(n);
 
-                function cleanupHistory(history){
-                    history.forEach(function(position){
-                       position.forEach(function(entry, i){
-                           if(i == 0){
-                               entry.cp = entry.p;
-                           }else{
-                               entry.cp = entry.p + position[i-1].cp;
-                           }
+                function cleanupHistory(history) {
+                    history.forEach(function (position) {
+                        position.forEach(function (entry, i) {
+                            if (i == 0) {
+                                entry.cp = entry.p;
+                            } else {
+                                entry.cp = entry.p + position[i - 1].cp;
+                            }
 
-                       });
+                        });
                     });
                 }
 
                 var histories = [swapHistory];
+
                 function swap(loop, swapIndex) {
                     var p = 1 / (loop + 1);
 
                     var fromSwapToSwap = [], fromSwapToLoop = [], fromLoopToSwap = [];
                     lastSwapHistory[swapIndex].forEach(function (e) {
                         fromSwapToSwap.push({
-                            e : e.e,
-                            p : e.p * (1-p)
+                            e: e.e,
+                            p: e.p * (1 - p),
+                            source: swapIndex,
+                            target: swapIndex,
+                            lastMultP : (1 - p)
                         });
                         fromSwapToLoop.push({
-                            e : e.e,
-                            p : e.p * p
+                            e: e.e,
+                            p: e.p * p,
+                            source: swapIndex,
+                            target: loop,
+                            lastMultP : p
                         });
                     });
                     lastSwapHistory[loop].forEach(function (e) {
                         fromLoopToSwap.push({
-                            e : e.e,
-                            p : e.p * p
+                            e: e.e,
+                            p: e.p * p,
+                            source: loop,
+                            target: swapIndex,
+                            lastMultP : p
                         })
                     });
-                    if(swapIndex < loop){
+                    if (swapIndex < loop) {
                         swapHistory[swapIndex].push.apply(swapHistory[swapIndex], fromSwapToSwap);
                         swapHistory[swapIndex].push.apply(swapHistory[swapIndex], fromLoopToSwap);
                     }
@@ -296,27 +307,30 @@
                                 var index = ( d == 0 ? swapIndex : loop );
                                 return "translate(" + (index * s + 1) + ", 0)";
                             }).transition()
-                            .duration(500)
+                            .duration(1000)
                             .style("opacity", "0")
                             .remove();
 
                     var loopGroup = drawRoot.selectAll("g.loop").data(histories);
                     loopGroup.enter().append("g")
-                            .attr("class", function(d, i){
+                            .attr("class", function (d, i) {
                                 return "loop loop" + (n - 1 - i);
                             })
-                            .attr("transform", function(d,i){
+                            .attr("transform", function (d, i) {
                                 return "translate(0," + ((i + 1) * 1.1 * s) + ")";
                             });
 
-                    var position = loopGroup.selectAll("g.position").data(function(d){return d});
+                    var position = loopGroup.selectAll("g.position").data(function (d) {
+                        return d
+                    });
                     position.enter().append("g")
-                            .attr("class", function(d,i){
+                            .attr("class", function (d, i) {
                                 return "position position" + i;
                             })
-                            .attr("transform", function(d,i){
-                                return "translate(" + (i * s) +",0)";
+                            .attr("transform", function (d, i) {
+                                return "translate(" + (i * s) + ",0)";
                             });
+
 
                     var swapProb = position.selectAll("rect.swapProb").data(function (d) {
                         return d
@@ -333,33 +347,38 @@
                             })
                             .attr("height", s - 2)
                             .attr("transform", function (d) {
-                                var x = (d.cp - d.p) * (s-2) + 1;
-                                return "translate(" + x + ",1)";
+                                return "translate(" + [(d.source - d.target + d.cp - d.p) * s, -1.1 * s + 1] + ")  scale(" + [1/ d.lastMultP, 1] + ")";
+                            })
+                            .transition()
+                            .duration(1000)
+                            .attr("transform", function (d) {
+                                var x = (d.cp - d.p) * (s - 2) + 1;
+                                return "translate(" + x + ",1) scale(1,1)";
                             });
 
                     var done = loop == 0;
-                    if(loop > 0){
+                    if (loop > 0) {
                         if (swapIndex >= loop) {
                             lastSwapHistory = swapHistory;
                             swapHistory = emptyHistory(loop);
                             histories.push(swapHistory);
                             loop -= 1;
                             swapIndex = 0;
-                        }else{
-                            swapIndex+=1;
+                        } else {
+                            swapIndex += 1;
                         }
                     }
                     if (!done) {
                         setTimeout(function () {
                             swap(loop, swapIndex);
-                        }, 500);
-                    }else{
-                        histories.forEach(function(history){
-                           history.forEach(function(position){
-                               position.sort(function(l,r){
-                                   return l.e - r.e;
-                               });
-                           });
+                        }, swapIndex == 0 && loop > 0 ? 3000 : 1000);
+                    } else {
+                        histories.forEach(function (history) {
+                            history.forEach(function (position) {
+                                position.sort(function (l, r) {
+                                    return l.e - r.e;
+                                });
+                            });
                             cleanupHistory(history);
                         });
                         console.log(histories);
@@ -367,7 +386,7 @@
                                 .delay(1000)
                                 .duration(1000)
                                 .attr("transform", function (d) {
-                                    var x = (d.cp - d.p) * (s-2) + 1;
+                                    var x = (d.cp - d.p) * (s - 2) + 1;
                                     return "translate(" + x + ",1)";
                                 });
 
@@ -376,9 +395,9 @@
                                 .duration(1000)
                                 .style("opacity", 0);
 
-                        for(var loopI = 0; loopI < n; loopI++){
+                        for (var loopI = 0; loopI < n; loopI++) {
                             drawRoot.selectAll("g.loop" + loopI + " g.position")
-                                    .filter(function(d,i){
+                                    .filter(function (d, i) {
                                         return i < loopI;
                                     }).transition()
                                     .delay(3000)
@@ -387,17 +406,16 @@
                         }
 
                         loopGroup.transition().delay(3000).duration(1000).attr("transform", "translate(0,0)");
-
                         drawRoot.transition().delay(9000).duration(1000).style("opacity", 0);
-
                         setTimeout(start, 10000);
                     }
                 }
 
                 setTimeout(function () {
                     swap(n - 1, 0);
-                }, 3000);
+                }, 5000);
             }
+
             start();
         })();
     </script>
