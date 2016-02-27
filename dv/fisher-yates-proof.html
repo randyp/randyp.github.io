@@ -18,6 +18,10 @@
             font-size: 16px;
         }
     </style>
+
+    <script>
+        var cellMargin = 3;
+    </script>
 </head>
 <body>
 <div style="max-width:800px; margin: 0 auto">
@@ -88,9 +92,9 @@
                 elementRect.enter()
                         .append("rect");
 
-                elementRect.attr("width", s - 2)
-                        .attr("height", s - 2)
-                        .attr("transform", "translate(1,1)")
+                elementRect.attr("width", s - cellMargin*2)
+                        .attr("height", s - cellMargin*2)
+                        .attr("transform", "translate(" + [cellMargin, cellMargin] + ")")
                         .attr("fill", function (d) {
                             return d3.hsl(d / n * 360, 0.8, 0.5)
                         });
@@ -210,15 +214,15 @@
                         .enter()
                         .append("g")
                         .attr("transform", function (d) {
-                            return "translate(" + [d * s + 1, 0] + ")";
+                            return "translate(" + [d * s, 0] + ")";
                         });
 
                 element.selectAll("rect").data(function (d) {
                     return [d]
                 }).enter().append("rect")
-                        .attr("width", s - 2)
-                        .attr("height", s - 2)
-                        .attr("transform", "translate(1,1)")
+                        .attr("width", s - cellMargin*2)
+                        .attr("height", s - cellMargin*2)
+                        .attr("transform", "translate(" + [cellMargin, cellMargin] + ")")
                         .attr("fill", function (d) {
                             return d3.hsl((d / n) * 360, 0.8, 0.5);
                         });
@@ -304,14 +308,14 @@
                     svg.selectAll("rect.highlight" + loop + "_" + swapIndex)
                             .data([0, 1]).enter()
                             .append("rect")
-                            .attr("width", s - 2)
+                            .attr("width", s - cellMargin*2)
                             .attr("height", offset / 3)
                             .attr("fill", function (d) {
                                 var index = ( d == 0 ? swapIndex : loop );
                                 return d3.hsl((index / n) * 360, 0.8, 0.5);
                             }).attr("transform", function (d) {
                                 var index = ( d == 0 ? swapIndex : loop );
-                                return "translate(" + (index * s + 1) + ", 0)";
+                                return "translate(" + (index * s + cellMargin) + ", 0)";
                             }).transition()
                             .duration(1000)
                             .style("opacity", "0")
@@ -349,17 +353,17 @@
                                 return d3.hsl((d.e / n) * 360, 0.8, 0.5)
                             })
                             .attr("width", function (d) {
-                                return d.p * (s - 2)
+                                return d.p * (s - cellMargin*2)
                             })
-                            .attr("height", s - 2)
+                            .attr("height", s - cellMargin*2)
                             .attr("transform", function (d) {
-                                return "translate(" + [(d.source - d.target + d.lastCp) * s + 1, -1.1 * s + 1] + ")  scale(" + [1 / d.lastMultP, 1] + ")";
+                                return "translate(" + [(d.source - d.target + d.lastCp) * s + cellMargin, -1.1 * s + cellMargin] + ")  scale(" + [1 / d.lastMultP, 1] + ")";
                             })
                             .transition()
                             .duration(1000)
                             .attr("transform", function (d) {
-                                var x = (d.cp - d.p) * (s - 2) + 1;
-                                return "translate(" + x + ",1) scale(1,1)";
+                                var x = (d.cp - d.p) * (s - cellMargin*2) + cellMargin;
+                                return "translate(" + [x, cellMargin] + ") scale(1,1)";
                             });
 
                     var done = loop == 0;
@@ -392,8 +396,8 @@
                                 .delay(1000)
                                 .duration(1000)
                                 .attr("transform", function (d) {
-                                    var x = (d.cp - d.p) * (s - 2) + 1;
-                                    return "translate(" + x + ",1)";
+                                    var x = (d.cp - d.p) * (s - cellMargin*2) + cellMargin;
+                                    return "translate(" + [x, cellMargin] + ")";
                                 });
 
                         element.transition()
