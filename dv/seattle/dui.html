@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>randyp</title>
+    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.0/seedrandom.min.js"></script>
+    <link crossorigin="anonymous" href="../../css/index.css" media="all" rel="stylesheet">
+
+    <style>
+
+    </style>
+</head>
+<body>
+<div style="max-width:800px; margin: 0 auto">
+    <h3 id="blah-header"></h3>
+    <svg id="blah"></svg>
+    <script>
+        var svg = d3.select("svg#blah")
+                .attr("width", 500)
+                .attr("height", 500)
+                .attr("viewBox", "157.7 34.2 5.5 5.5");
+
+        d3.json("../../data/dui_by_time.json", function (vizData) {
+            var maxCount = 30;
+            var heats = [
+                "#5E4FA2",
+                "#3288BD",
+                "#66C2A5",
+                "#ABDDA4",
+                "#E6F598",
+                "#f6faaa",
+                "#FEE08B",
+                "#FDAE61",
+                "#F46D43",
+                "#D53E4F",
+                "#9E0142"
+            ];
+
+            function heat(timeBucketId, shapeId) {
+                var timeBucket = vizData.data[timeBucketId];
+                var count = shapeId in timeBucket ? timeBucket[shapeId] : 0;
+                var heatIndex = Math.floor(Math.min(count, maxCount) / maxCount * heats.length);
+                return heats[heatIndex] || heats[0];
+            }
+
+            var animationDuration = 3000;
+
+            var shapes = svg.selectAll("path").data(vizData.shapes);
+            var clock = svg.append('g')
+                    .attr("transform", "translate(161.7, 37.5)")
+
+            clock.append("circle").attr("r", 0.8)
+                    .attr("stroke", "#000")
+                    .attr("stroke-width", 0.01)
+                    .attr("fill", "#fff");
+
+            var hourHand = clock.append("line").attr("stroke", "#000").attr("stroke-width", 0.01);
+
+            function update(timeBucketId) {
+                timeBucketId = timeBucketId % 24;
+                shapes.transition()
+                        .ease("linear")
+                        .duration(animationDuration).attr("fill", function (d, i) {
+                            return heat(timeBucketId, i);
+                        });
+
+                var theta = ((timeBucketId - 3) / 12) * 2 * Math.PI;
+                hourHand.transition()
+                        .delay(animationDuration - 250)
+                        .duration(250)
+                        .attr("x1", 0)
+                        .attr("y1", 0)
+                        .attr("x2", Math.cos(theta) * 0.7)
+                        .attr("y2", Math.sin(theta) * 0.7);
+
+
+                setTimeout(function () {
+                    update(timeBucketId + 1)
+                }, animationDuration);
+            }
+
+            function start(timeBucketId) {
+                shapes.enter().append("path")
+                        .attr("d", d3.geo.path())
+                        .attr("fill", function (d, i) {
+                            return heat(timeBucketId, i);
+                        });
+
+                var theta = ((timeBucketId - 3) / 12) * 2 * Math.PI;
+                hourHand.attr("x1", 0)
+                        .attr("y1", 0)
+                        .attr("x2", Math.cos(theta) * 0.7)
+                        .attr("y2", Math.sin(theta) * 0.7);
+
+                update(timeBucketId + 1)
+            }
+
+            start(12);
+        });
+    </script>
+</div>
+</body>
+</html>
