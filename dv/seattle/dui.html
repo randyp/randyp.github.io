@@ -28,15 +28,20 @@
             "#9E0142"
         ];
 
-        var maxCount = 30;
+        var maxIndividualCount = 30,
+                maxAllCount = 198,
+                maxAllCountShape = 0,
+                maxShapeArea = 0.0;
         var loadedListeners = [];
         var path = d3.geo.path();
-
     </script>
 </head>
 <body>
 <div style="max-width:800px; margin: 0 auto">
+    <h1>Case Study: Seattle DUI incidents between 2010-07-17 and 2016-02-27, by census tract</h1>
+
     <div id="counts">
+        <h4>Total Counts, Darker Blue represents higher incidence count</h4>
         <svg></svg>
         <script>
             loadedListeners.push(function (data) {
@@ -53,25 +58,67 @@
                     return [shape];
                 }).enter().append("path")
                         .attr("d", d3.geo.path())
-                        .attr("fill", d3.hsl(210, 0.5, 0.5));
+                        .attr("fill", d3.hsl(210, 0.5, 0.5))
+                        .style("opacity", function (shape, bleh, shapeId) {
+                            return 0.3 + (0.7 * data.all[shapeId] / maxAllCount);
+                        });
 
-                groups.selectAll("text")
-                        .data(function (shape) {
-                            return [shape];
-                        }).enter().append("text")
-                        .attr("fill", "#fff")
-                        .text(function (shape, bleh, shapeId ) {
-                            return data.all[shapeId];
-                        })
-                        .attr("text-anchor", "middle")
-                        .attr("transform", function (shape) {
-                            console.log(path.centroid(shape));
-                            return "translate(" + path.centroid(shape) + ")";
-                        }).attr("font-size", 0.08)
+//                groups.selectAll("text")
+//                        .data(function (shape) {
+//                            return [shape];
+//                        }).enter().append("text")
+//                        .attr("fill", "#fff")
+//                        .text(function (shape, bleh, shapeId) {
+//                            return data.all[shapeId];
+//                        })
+//                        .attr("text-anchor", "middle")
+//                        .attr("transform", function (shape) {
+//                            return "translate(" + path.centroid(shape) + ")";
+//                        }).attr("font-size", 0.08)
+            })
+        </script>
+    </div>
+    <div id="counts-area-normalized">
+        <h4>Total Counts, Normalized By Census Tract Area</h4>
+        <svg></svg>
+        <script>
+            loadedListeners.push(function (data) {
+                var svg = d3.select("#counts-area-normalized svg")
+                        .attr("width", 300)
+                        .attr("height", 500)
+                        .attr("viewBox", "157.7 34.2 3.3 5.5");
+
+                var groups = svg.selectAll("g").data(data.shapes);
+
+                groups.enter().append("g");
+
+                groups.selectAll("path").data(function (shape) {
+                    return [shape];
+                }).enter().append("path")
+                        .attr("d", d3.geo.path())
+                        .attr("fill", d3.hsl(210, 0.5, 0.5))
+                        .style("opacity", function (shape, bleh, shapeId) {
+                            return 0.3 + (0.7 * ( maxShapeArea * data.all[shapeId] / (maxAllCount * path.area(shape)) ));
+                        });
+
+//                groups.selectAll("text")
+//                        .data(function (shape) {
+//                            return [shape];
+//                        }).enter().append("text")
+//                        .attr("fill", "#fff")
+//                        .text(function (shape, bleh, shapeId) {
+//                            return data.all[shapeId];
+//                        })
+//                        .attr("text-anchor", "middle")
+//                        .attr("transform", function (shape) {
+//                            console.log(path.centroid(shape));
+//                            return "translate(" + path.centroid(shape) + ")";
+//                        }).attr("font-size", 0.08)
             })
         </script>
     </div>
     <div id="heat-by-time">
+        <h4>Counts by Hour</h4>
         <svg></svg>
         <script>
             loadedListeners.push(function (data) {
@@ -83,7 +130,7 @@
                 function heat(timeBucketId, shapeId) {
                     var timeBucket = data.data[timeBucketId];
                     var count = shapeId in timeBucket ? timeBucket[shapeId] : 0;
-                    var heatIndex = Math.floor(Math.min(count, maxCount) / maxCount * heats.length);
+                    var heatIndex = Math.floor(Math.min(count, maxIndividualCount) / maxIndividualCount * heats.length);
                     return heats[heatIndex] || heats[0];
                 }
 
@@ -103,7 +150,7 @@
                 function update(timeBucketId) {
                     timeBucketId = timeBucketId % 24;
                     shapes.transition()
-                            .ease("linear")
+                            .ease("east-in")
                             .duration(animationDuration).attr("fill", function (d, i) {
                                 return heat(timeBucketId, i);
                             });
@@ -150,10 +197,20 @@
         data.all = {};
         for (var shapeId = 0; shapeId < data.shapes.length; shapeId++) {
             data.all[shapeId] = 0;
+            var area = path.area(data.shapes[shapeId]);
+            if(maxShapeArea < area){
+                maxShapeArea = area;
+            }
         }
         for (var timeBucketId = 0; timeBucketId < 24; timeBucketId++) {
             for (var shapeId = 0; shapeId < data.shapes.length; shapeId++) {
-                data.all[shapeId] += (data.data[timeBucketId][shapeId] || 0);
+                var count = (data.data[timeBucketId][shapeId] || 0);
+                maxIndividualCount = Math.max(count, maxIndividualCount);
+                data.all[shapeId] += count;
+                if (maxAllCount < data.all[shapeId]) {
+                    maxAllCount = data.all[shapeId];
+                    maxAllCountShape = shapeId;
+                }
             }
         }
         for (var i = 0; i < loadedListeners.length; i++) {
