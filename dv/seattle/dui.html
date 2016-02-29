@@ -7,29 +7,10 @@
     <title>randyp</title>
     <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.0/seedrandom.min.js"></script>
-    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-          rel="stylesheet">
     <link crossorigin="anonymous" href="../../css/index.css" media="all" rel="stylesheet">
 
 
-    <style>
-
-    </style>
-
     <script>
-        var heats = [
-            "#5E4FA2",
-            "#3288BD",
-            "#66C2A5",
-            "#ABDDA4",
-            "#E6F598",
-            "#f6faaa",
-            "#FEE08B",
-            "#FDAE61",
-            "#F46D43",
-            "#D53E4F",
-            "#9E0142"
-        ];
 
         var maxIndividualCount = 30,
                 maxAllCount = 198,
@@ -41,7 +22,12 @@
 </head>
 <body>
 <div style="max-width:800px; margin: 0 auto">
-    <h1>Case Study: Seattle DUI incidents between 2010-07-17 and 2016-02-27, by census tract</h1>
+    <h1>Case Study: Seattle DUI incidents by census tract</h1>
+    <h3>(between 2010-07-17 and 2016-02-27)</h3>
+
+    <p>A visualization is only worthwhile if it tells a story, and hopefully the below visualizations tell mine.</p>
+
+    <p></p>
 
     <div id="counts">
         <h4>Total DUI Counts (Darker Blue represents higher incidence count)</h4>
@@ -63,9 +49,9 @@
                     return [shape];
                 }).enter().append("path")
                         .attr("d", d3.geo.path())
-                        .attr("fill", d3.hsl(210, 0.5, 0.5))
+                        .attr("fill", d3.hsl(210, 1.0, 0.3))
                         .style("opacity", function (shape, bleh, shapeId) {
-                            return 0.3 + (0.7 * data.all[shapeId] / maxAllCount);
+                            return 0.1 + (0.9 * ( maxShapeArea * data.all[shapeId] / (maxAllCount * path.area(shape)) ));
                         })
                         .on("mouseover", function (shape, bleh, shapeId) {
                             description.text(data.all[shapeId]);
@@ -78,7 +64,7 @@
     </div>
     <hr>
     <div id="counts-area-normalized">
-        <h4>Total DUI Counts, Normalized by Area</h4>
+        <h4>Total DUI Counts, Normalized by Census Tract Area</h4>
         <svg></svg>
         <script>
             loadedListeners.push(function (data) {
@@ -97,9 +83,9 @@
                     return [shape];
                 }).enter().append("path")
                         .attr("d", d3.geo.path())
-                        .attr("fill", d3.hsl(210, 0.5, 0.5))
+                        .attr("fill", d3.hsl(210, 1.0, 0.3))
                         .style("opacity", function (shape, bleh, shapeId) {
-                            return 0.3 + (0.7 * ( maxShapeArea * data.all[shapeId] / (maxAllCount * path.area(shape)) ));
+                            return 0.1 + (0.9 * ( maxShapeArea * data.all[shapeId] / (maxAllCount * path.area(shape)) ));
                         }).on("mouseover", function (shape, bleh, shapeId) {
                             description.text(data.all[shapeId]);
                         })
@@ -113,7 +99,7 @@
     </div>
     <hr>
     <div id="heat-by-time">
-        <h4>DUI Counts by Hour of Day</h4>
+        <h4>DUI Counts by Hour of Day, Normalized by Area</h4>
         <svg></svg>
         <script>
             loadedListeners.push(function (data) {
@@ -126,10 +112,8 @@
                 var descriptionText = description.text();
 
                 function heat(timeBucketId, shapeId) {
-                    var timeBucket = data.data[timeBucketId];
-                    var count = shapeId in timeBucket ? timeBucket[shapeId] : 0;
-                    var heatIndex = Math.floor(Math.min(count, maxIndividualCount) / maxIndividualCount * heats.length);
-                    return heats[heatIndex] || heats[0];
+                    var count = (data.data[timeBucketId][shapeId] || 0);
+                    return 0.1 + (0.9 * ( maxShapeArea * count / (maxIndividualCount * path.area(data.shapes[shapeId])) ));
                 }
 
                 var animationDuration = 3000;
@@ -147,16 +131,15 @@
 
                 function update(timeBucketId) {
                     timeBucketId = timeBucketId % 24;
-                    shapes
-                            .on("mouseover", function (shape, shapeId) {
-                                description.text(data.data[timeBucketId][shapeId] || 0);
-                            })
-                            .on("mouseout", function () {
-                                description.text(descriptionText);
-                            }).transition()
+                    shapes.on("mouseover", function (shape, shapeId) {
+                        description.text(data.data[timeBucketId][shapeId] || 0);
+                    }).on("mouseout", function () {
+                        description.text(descriptionText);
+                    }).transition()
                             .ease("east-in")
-                            .duration(animationDuration).attr("fill", function (d, i) {
-                                return heat(timeBucketId, i);
+                            .duration(animationDuration)
+                            .style("opacity", function (shape, shapeId) {
+                                return heat(timeBucketId, shapeId);
                             });
 
 
@@ -178,8 +161,9 @@
                 function start(timeBucketId) {
                     shapes.enter().append("path")
                             .attr("d", d3.geo.path())
-                            .attr("fill", function (d, i) {
-                                return heat(timeBucketId, i);
+                            .attr("fill", d3.hsl(210, 1.0, 0.3))
+                            .style("opacity", function (shape, shapeId) {
+                                return heat(timeBucketId, shapeId);
                             })
                             .on("mouseover", function (shape, bleh, shapeId) {
                                 description.text(data.data[timeBucketId][shapeId] || 0);
@@ -224,7 +208,6 @@
                 }
             }
         }
-        console.log(data);
         for (var i = 0; i < loadedListeners.length; i++) {
             loadedListeners[i](data);
         }
