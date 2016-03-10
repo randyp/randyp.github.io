@@ -22,46 +22,46 @@
 </head>
 <body>
 <div style="max-width:800px; margin: 0 auto">
-    <h1>Case Study: Seattle DUI incidents by census tract</h1>
+    <h1>Seattle DUI Incidents: A case study in story telling</h1>
     <h3>(between 2010-07-17 and 2016-02-27)</h3>
 
-    <p>A visualization is only worthwhile if it tells a story, and hopefully the below visualizations tell mine.</p>
+    <p>A visualization is only worthwhile if it tells a story. Below, I work to </p>
 
     <p></p>
 
     <div id="counts">
         <h4>Total DUI Counts (Darker Blue represents higher incidence count)</h4>
         <svg></svg>
-        <script>
-            loadedListeners.push(function (data) {
-                var viz = d3.select("#counts");
-                var svg = viz.select("svg")
-                        .attr("width", 300)
-                        .attr("height", 500)
-                        .attr("viewBox", "157.7 34.2 3.3 5.5");
-                var description = viz.select("h4");
-                var descriptionText = description.text();
-                var groups = svg.selectAll("g").data(data.shapes);
-
-                groups.enter().append("g");
-
-                groups.selectAll("path").data(function (shape) {
-                    return [shape];
-                }).enter().append("path")
-                        .attr("d", d3.geo.path())
-                        .attr("fill", d3.hsl(210, 1.0, 0.3))
-                        .style("opacity", function (shape, bleh, shapeId) {
-                            return 0.1 + (0.9 * ( maxShapeArea * data.all[shapeId] / (maxAllCount * path.area(shape)) ));
-                        })
-                        .on("mouseover", function (shape, bleh, shapeId) {
-                            description.text(data.all[shapeId]);
-                        })
-                        .on("mouseout", function () {
-                            description.text(descriptionText);
-                        });
-            })
-        </script>
     </div>
+    <script>
+        loadedListeners.push(function (data) {
+            var viz = d3.select("#counts");
+            var svg = viz.select("svg")
+                    .attr("width", 300)
+                    .attr("height", 500)
+                    .attr("viewBox", "157.7 34.2 3.3 5.5");
+            var description = viz.select("h4");
+            var descriptionText = description.text();
+            var groups = svg.selectAll("g").data(data.shapes);
+
+            groups.enter().append("g");
+
+            groups.selectAll("path").data(function (shape) {
+                return [shape];
+            }).enter().append("path")
+                    .attr("d", d3.geo.path())
+                    .attr("fill", d3.hsl(210, 1.0, 0.3))
+                    .style("opacity", function (shape, bleh, shapeId) {
+                        return 0.1 + (0.9 * ( data.all[shapeId] / (maxAllCount) ));
+                    })
+                    .on("mouseover", function (shape, bleh, shapeId) {
+                        description.text(data.all[shapeId]);
+                    })
+                    .on("mouseout", function () {
+                        description.text(descriptionText);
+                    });
+        })
+    </script>
     <hr>
     <div id="counts-area-normalized">
         <h4>Total DUI Counts, Normalized by Census Tract Area</h4>
