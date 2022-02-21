@@ -1,7 +1,3 @@
 title: Bootstrapping Confidence Intervals... Doesn't Work
-header:
-  - /_shared/header.md
 main:
   - body.md
-footer:
-  - /_shared/footer.md

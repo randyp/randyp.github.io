@@ -20,4 +20,3 @@ Below is a short case study in which we iteratively refine a visualization from 
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.0/seedrandom.min.js"></script>
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="../assets/seattle-dui/index.js"></script>

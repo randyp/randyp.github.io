@@ -14,7 +14,7 @@ Here is my [online resume](./resume).
 
 ## Articles
 
-<!-- * [Bootstrapping Confidence Intervals... Doesn't Work](./bootstrapping-confidence-intervals-doesnt-work/) -->
+* [Bootstrapping Confidence Intervals... Doesn't Work](./assets/static/bootstrapping-confidence-intervals-doesnt-work.html)
 * [Data Visualization Case Study: Seattle DUI Incidents](./seattle-dui)
 * [Visual Proof of Fisher-Yates Shuffle](./fisher-yates-proof)
 * [Please do not Feed the Code Monkey](./please-do-not-feed-the-code-monkey)

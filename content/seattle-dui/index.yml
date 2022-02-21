@@ -1,7 +1,5 @@
-title: Seattle DUI Incidents: A case study in story telling
-header:
-  - /_shared/header.md
+title: "Seattle DUI Incidents: A case study in story telling"
 main:
   - body.md
-footer:
-  - /_shared/footer.md
+script:
+  - seattle-dui
