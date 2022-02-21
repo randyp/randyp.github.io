@@ -11,7 +11,13 @@
 	"devDependencies": {
 		"cuttlebelle": "^1.0.0-alpha.77"
 	},
+    "cuttlebelle": {
+        "folder": {
+            "site": "docs",
+            "docs": "documentation"
+        }
+    },
 	"keywords": [],
-	"author": "",
+	"author": "randyp",
 	"license": "ISC"
 }
