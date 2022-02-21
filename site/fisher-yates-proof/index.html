@@ -1,0 +1,389 @@
+<!DOCTYPE html><html><head><title>Visual Proof of the Fisher-Yates Shuffle</title><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/css/site.css"/><link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.1.0/octicons.min.css" media="all" rel="stylesheet"/><link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/><link crossorigin="anonymous" href="https://assets-cdn.github.com/pinned-octocat.svg" rel="icon" sizes="any" mask=""/><link rel="mask-icon" href="https://github.githubassets.com/pinned-octocat.svg" color="#000000"/><link rel="alternate icon" class="js-site-favicon" type="image/png" href="https://github.githubassets.com/favicons/favicon-dark.png"/><link rel="icon" class="js-site-favicon" type="image/svg+xml" href="https://github.githubassets.com/favicons/favicon-dark.svg"/></head><body><div class="row"><div class="col-md-2" itemscope="" itemtype="http://schema.org/Person" style="padding:51px"><img alt="" class="avatar" height="230" src="https://avatars1.githubusercontent.com/u/624757?v=3&amp;s=460" width="230"/><h1 class="vcard-names"><span class="vcard-username" itemprop="additionalName">randyp</span></h1><ul class="vcard-details"><li class="vcard-detail" itemprop="homeLocation" title="Seattle, WA"><span class="octicon octicon-location"></span> Seattle, WA</li><li class="vcard-detail"><span class="octicon octicon-mail"></span> <a class="email" href="mailto:%72%73%70%65%6e%73%69%6e%67%65%72@%67%6d%61%69%6c.%63%6f%6d">rspensinger@gmail.com</a></li></ul></div><div class="col-md-8"><div><h3 class="article-header" href="/index.html"><span class="octicon octicon-book"></span> <span class="current-file">README.md</span></h3><article class="markdown-body"><h1 id="visual-proof-of-the-fisher-yates-shuffle">Visual Proof of the Fisher-Yates Shuffle</h1>
+<p><a href="https://bost.ocks.org/mike/shuffle/">I have found great visualization</a> of the <a href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm">fisher-yates shuffling algorithm</a>, but have yet to find a great <em>visualization of the proof</em>&gt; that the fisher-yates shuffle is <em>random</em>.</p>
+<p>What do we mean by <em>random</em>?
+One way to prove a shuffle is (uniformly) random is to show that every element has equal probability of being shuffled to every position, including the original position.</p>
+<p><img src="../assets/img/each-element-each-position.svg" alt="each element in each position"></p>
+<h2 id="algorithm">Algorithm</h2>
+<p>The fisher-yates algorithm shuffles a list with the following steps:</p>
+<ol>
+<li>swap the last element, e<sub>n</sub>, with the element e<sub>i</sub> at a random position i.</li>
+<li>repeat/recurse step 1 on the sublist from e<sub>0</sub> to e<sub>n-1</sub>.</li>
+<li>stop when the list you are shuffling only has a single element, or less.</li>
+</ol>
+<p>in python the code looks like:</p>
+<pre><code>a = [ ... ]
+for i in range(len(a) - 1, 0, -1): # n-1, n-2, n-3, ... 1
+    j = random.randint(0, i)
+    a[i], a[j] = a[j], a[i]
+</code></pre>
+<p>Simple, no? The animation of an example shuffle is also pretty simple. You aren&#39;t missing anything...</p>
+<p><svg id="algorithm-viz"></svg></p>
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>
+    (function () {
+        var cellMargin = 3;
+        var permutation = [3, 2, 1, 4, 0],//swap(0,4) [4,1,2,3,0]  //swap(0,3) [3,1,2,4,0] //swap (2, 1) [3,2,1,4,0]
+                n = permutation.length,
+                w = 300,
+                s = w / n,
+                h = s * 3.2;
+
+        var data;
+
+        var svg = d3.select("svg#algorithm-viz").attr("width", w).attr("height", h);
+
+        var elementsGroup = svg.append("g").attr("transform", "translate(" + [0, s * 1.1] + ")");
+        var headerText = "";
+
+        function draw(iteration, swapIndex) {
+            var element = elementsGroup.selectAll("g").data(data);
+            element.enter().append("g").attr("transform", function (d, i) {
+                return "translate(" + [i * s, 0] + ")";
+            });
+
+            element.style("opacity", 1);
+
+            var elementRect = element.selectAll("rect").data(function (d) {
+                return [d]
+            });
+
+            elementRect.enter()
+                    .append("rect");
+
+            elementRect.attr("width", s - cellMargin*2)
+                    .attr("height", s - cellMargin*2)
+                    .attr("transform", "translate(" + [cellMargin, cellMargin] + ")")
+                    .attr("fill", function (d) {
+                        return d3.hsl(d / n * 360, 0.8, 0.5)
+                    });
+
+            var elementText = element.selectAll("text").data(function (d) {
+                return [d]
+            });
+            elementText.enter()
+                    .append("text")
+                    .attr("text-anchor", "middle")
+                    .attr("transform", "translate(" + [s / 2, s / 2 + 5] + ")")
+                    .attr("fill", "#fff");
+
+            elementText.text(function (d) {
+                return d
+            });
+
+            if (typeof iteration !== 'undefined' && typeof swapIndex !== 'undefined') {
+                headerText += " swap(" + [swapIndex, iteration] + ")";
+                d3.select("h3 span#algorithm-viz-header")
+                        .text(headerText);
+                element.filter(function (d, i) {
+                    return i > iteration;
+                }).style("opacity", 0.3);
+
+                var lastElement = element.filter(function (d, i) {
+                    return i == iteration;
+                });
+                if (iteration != swapIndex) {
+                    lastElement.attr("transform", "translate(" + [swapIndex * s, 0] + ")")
+                            .transition()
+                            .attr("transform", "translate(" + [swapIndex * s, -s * 1.1] + ")")
+                            .transition()
+                            .attr("transform", "translate(" + [iteration * s, -s * 1.1] + ")")
+                            .transition()
+                            .attr("transform", "translate(" + [iteration * s, 0] + ")")
+                            .style("opacity", 0.3);
+
+                    element.filter(function (d, i) {
+                        return i == swapIndex;
+                    }).attr("transform", "translate(" + [iteration * s, 0] + ")")
+                            .transition()
+                            .attr("transform", "translate(" + [iteration * s, s * 1.1] + ")")
+                            .transition()
+                            .attr("transform", "translate(" + [swapIndex * s, s * 1.1] + ")")
+                            .transition()
+                            .attr("transform", "translate(" + [swapIndex * s, 0] + ")");
+                } else {
+                    lastElement.style("opacity", 0.3);
+                }
+            }
+        }
+
+        function swap(l, i, j) {
+            if (i != j) {
+                var temp = l[i];
+                l[i] = l[j];
+                l[j] = temp;
+            }
+        }
+
+        function loop(i) {
+            if (i > 0) {
+                var j = data.indexOf(permutation[i]);
+                swap(data, i, j);
+                draw(i, j);
+                setTimeout(function () {
+                    loop(i - 1);
+                }, 2000);
+            } else {
+                setTimeout(function () {
+                    start();
+                }, 2000);
+            }
+        }
+
+        function start() {
+            d3.select("h3 span#algorithm-viz-header").text("");
+            headerText = "";
+            data = d3.range(n);
+            draw();
+            setTimeout(function () {
+                loop(permutation.length - 1);
+            }, 1000);
+        }
+
+        start();
+    })();
+</script>
+
+<h2 id="proof">Proof</h2>
+<p>In the visualization above, we are only demonstrating one possible shuffle each time.
+What if we considered all possible swaps and kept track of the probability each element was in each position?
+If a shuffle was truly random then each element, representy by color, should occur in each position equally after shuffling.</p>
+<p>In the visualization below, we highlight two positions before considering the swap.
+Colors represent elements.
+After an iteration we stop considering the last element, hence the diagonal shape.</p>
+<p><svg id="swaps-viz"></svg></p>
+<script>
+    (function () {
+        var cellMargin = 3;
+        var w = 300,
+                offset = 30,
+                n = 5,
+                s = w / n,
+                h = s * (n + 2);
+        var svg = d3.select("svg#swaps-viz").attr("width", 1024).attr("height", h);
+
+
+        function start() {
+            svg.selectAll("*").remove();
+            var drawRoot = svg.append("g").attr("transform", "translate(0, " + offset + ")");
+
+            var element = drawRoot.selectAll("g")
+                    .data(d3.range(n))
+                    .enter()
+                    .append("g")
+                    .attr("transform", function (d) {
+                        return "translate(" + [d * s, 0] + ")";
+                    });
+
+            element.selectAll("rect").data(function (d) {
+                return [d]
+            }).enter().append("rect")
+                    .attr("width", s - cellMargin*2)
+                    .attr("height", s - cellMargin*2)
+                    .attr("transform", "translate(" + [cellMargin, cellMargin] + ")")
+                    .attr("fill", function (d) {
+                        return d3.hsl((d / n) * 360, 0.8, 0.5);
+                    });
+
+            element.selectAll("text").data(function (d) {
+                return [d]
+            }).enter().append("text")
+                    .attr("text-anchor", "middle")
+                    .attr("transform", "translate(" + [s / 2, s / 2 + 5] + ")")
+                    .attr("fill", "#fff")
+                    .text(function (d) {
+                        return d
+                    });
+
+
+            function emptyHistory(n) {
+                var toReturn = [];
+                for (var i = 0; i < n; i++) {
+                    toReturn.push([]);
+                }
+                return toReturn;
+            }
+
+            var lastSwapHistory = [];
+            for (var i = 0; i < n; i++) {
+                lastSwapHistory.push([{e: i, p: 1.0, cp: 1.0}]);
+            }
+            var swapHistory = emptyHistory(n);
+
+            function cleanupHistory(history) {
+                history.forEach(function (position) {
+                    position.forEach(function (entry, i) {
+                        entry.cp = entry.p;
+                        if (i > 0) {
+                            entry.cp += position[i - 1].cp;
+                        }
+                    });
+                });
+            }
+
+            var histories = [swapHistory];
+
+            function swap(loop, swapIndex) {
+                var p = 1 / (loop + 1);
+
+                var fromSwapToSwap = [], fromSwapToLoop = [], fromLoopToSwap = [];
+                lastSwapHistory[swapIndex].forEach(function (e) {
+                    fromSwapToSwap.push({
+                        e: e.e,
+                        p: e.p * (1 - p),
+                        source: swapIndex,
+                        target: swapIndex,
+                        lastMultP: (1 - p),
+                        lastCp: e.cp - e.p
+                    });
+                    fromSwapToLoop.push({
+                        e: e.e,
+                        p: e.p * p,
+                        source: swapIndex,
+                        target: loop,
+                        lastMultP: p,
+                        lastCp: e.cp - e.p
+                    });
+                });
+                lastSwapHistory[loop].forEach(function (e) {
+                    fromLoopToSwap.push({
+                        e: e.e,
+                        p: e.p * p,
+                        source: loop,
+                        target: swapIndex,
+                        lastMultP: p,
+                        lastCp: e.cp - e.p
+                    })
+                });
+                if (swapIndex < loop) {
+                    swapHistory[swapIndex].push.apply(swapHistory[swapIndex], fromSwapToSwap);
+                    swapHistory[swapIndex].push.apply(swapHistory[swapIndex], fromLoopToSwap);
+                }
+                swapHistory[loop].push.apply(swapHistory[loop], fromSwapToLoop);
+
+                cleanupHistory(swapHistory);
+
+                svg.selectAll("rect.highlight" + loop + "_" + swapIndex)
+                        .data([0, 1]).enter()
+                        .append("rect")
+                        .attr("width", s - cellMargin*2)
+                        .attr("height", offset / 3)
+                        .attr("fill", function (d) {
+                            var index = ( d == 0 ? swapIndex : loop );
+                            return d3.hsl((index / n) * 360, 0.8, 0.5);
+                        }).attr("transform", function (d) {
+                            var index = ( d == 0 ? swapIndex : loop );
+                            return "translate(" + (index * s + cellMargin) + ", 0)";
+                        }).transition()
+                        .duration(1000)
+                        .style("opacity", "0")
+                        .remove();
+
+                var loopGroup = drawRoot.selectAll("g.loop").data(histories);
+                loopGroup.enter().append("g")
+                        .attr("class", function (d, i) {
+                            return "loop loop" + (n - 1 - i);
+                        })
+                        .attr("transform", function (d, i) {
+                            return "translate(0," + ((i + 1) * 1.1 * s) + ")";
+                        });
+
+                var position = loopGroup.selectAll("g.position").data(function (d) {
+                    return d
+                });
+                position.enter().append("g")
+                        .attr("class", function (d, i) {
+                            return "position position" + i;
+                        })
+                        .attr("transform", function (d, i) {
+                            return "translate(" + (i * s) + ",0)";
+                        });
+
+
+                var swapProb = position.selectAll("rect.swapProb").data(function (d) {
+                    return d
+                });
+
+                swapProb.enter()
+                        .append("rect")
+                        .attr("class", "swapProb")
+                        .attr("fill", function (d) {
+                            return d3.hsl((d.e / n) * 360, 0.8, 0.5)
+                        })
+                        .attr("width", function (d) {
+                            return d.p * (s - cellMargin*2)
+                        })
+                        .attr("height", s - cellMargin*2)
+                        .attr("transform", function (d) {
+                            return "translate(" + [(d.source - d.target + d.lastCp) * s + cellMargin, -1.1 * s + cellMargin] + ")  scale(" + [1 / d.lastMultP, 1] + ")";
+                        })
+                        .transition()
+                        .duration(1000)
+                        .attr("transform", function (d) {
+                            var x = (d.cp - d.p) * (s - cellMargin*2) + cellMargin;
+                            return "translate(" + [x, cellMargin] + ") scale(1,1)";
+                        });
+
+                var done = loop == 0;
+                if (loop > 0) {
+                    if (swapIndex >= loop) {
+                        lastSwapHistory = swapHistory;
+                        swapHistory = emptyHistory(loop);
+                        histories.push(swapHistory);
+                        loop -= 1;
+                        swapIndex = 0;
+                    } else {
+                        swapIndex += 1;
+                    }
+                }
+                if (!done) {
+                    setTimeout(function () {
+                        swap(loop, swapIndex);
+                    }, swapIndex == 0 && loop > 0 ? 3000 : 1000);
+                } else {
+                    histories.forEach(function (history) {
+                        history.forEach(function (position) {
+                            position.sort(function (l, r) {
+                                return l.e - r.e;
+                            });
+                        });
+                        cleanupHistory(history);
+                    });
+                    console.log(histories);
+                    swapProb.transition()
+                            .delay(1000)
+                            .duration(1000)
+                            .attr("transform", function (d) {
+                                var x = (d.cp - d.p) * (s - cellMargin*2) + cellMargin;
+                                return "translate(" + [x, cellMargin] + ")";
+                            });
+
+                    element.transition()
+                            .delay(3000)
+                            .duration(1000)
+                            .style("opacity", 0);
+
+                    for (var loopI = 0; loopI < n; loopI++) {
+                        drawRoot.selectAll("g.loop" + loopI + " g.position")
+                                .filter(function (d, i) {
+                                    return i < loopI;
+                                }).transition()
+                                .delay(3000)
+                                .duration(1000)
+                                .style("opacity", 0);
+                    }
+
+                    loopGroup.transition().delay(3000).duration(1000).attr("transform", "translate(0,0)");
+                    drawRoot.transition().delay(9000).duration(1000).style("opacity", 0);
+                    setTimeout(start, 10000);
+                }
+            }
+
+            setTimeout(function () {
+                swap(n - 1, 0);
+            }, 3000);
+        }
+
+        start();
+    })();
+</script>
+</article></div><footer><p>© Randy Pensinger</p></footer></div><div class="col-md-2"></div></div></body></html>

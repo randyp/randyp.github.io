@@ -1,6 +1,5 @@
 *.iml
 /node_modules
-/site
 
 # misc
 .DS_Store
