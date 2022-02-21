@@ -1,0 +1,17 @@
+{
+    "name": "Randy Pensinger",
+	"version": "1.0.0",
+	"description": "Your description",
+	"main": "index.js",
+	"scripts": {
+		"build": "cuttlebelle",
+		"watch": "cuttlebelle -w",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"devDependencies": {
+		"cuttlebelle": "^1.0.0-alpha.77"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC"
+}
