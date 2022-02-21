@@ -6,7 +6,7 @@ Greetings! My name is Randy Pensinger. I write software and think hard.
 
 ## Resume
 
-Here is my [online resume](./resume).
+Here is my [online resume](https://randyp.github.io/resume/).
 
 ## Code Repositories
 
