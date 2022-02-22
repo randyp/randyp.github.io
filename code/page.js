@@ -29,7 +29,7 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID }) => (
 	<body>
         <div className="row">
             <div className="col-md-3" itemscope="" itemtype="http://schema.org/Person" style={{padding: "51px"}}>
-                <img alt="" className="avatar" height="auto" src="https://avatars1.githubusercontent.com/u/624757?v=3&amp;s=460" width="100%" />
+                <img alt="" className="avatar hidden-sm hidden-xs" height="auto" src="https://avatars1.githubusercontent.com/u/624757?v=3&amp;s=460" width="100%" />
 
                 <h2 className="vcard-names">
                     <span className="vcard-username" itemprop="additionalName">randyp</span>
