@@ -1,4 +1,4 @@
-# Visual Proof of the Fisher-Yates Shuffle
+Fisher-Yates Shuffle: A Visual Proof
 
 [I have found great visualization](https://bost.ocks.org/mike/shuffle/) of the [fisher-yates shuffling algorithm](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm), but have yet to find a great *visualization of the proof*> that the fisher-yates shuffle is _random_.
 
