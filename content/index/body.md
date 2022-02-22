@@ -14,7 +14,7 @@ Here is my [online resume](https://randyp.github.io/resume/).
 
 ## Articles
 
-* [Bootstrapping Confidence Intervals... Doesn't Work](./assets/static/bootstrapping-confidence-intervals-doesnt-work.html)
-* [Data Visualization Case Study: Seattle DUI Incidents](./seattle-dui)
+* [Please do not Feed the Code Monkeys](./please-do-not-feed-the-code-monkeys)
 * [Visual Proof of Fisher-Yates Shuffle](./fisher-yates-proof)
-* [Please do not Feed the Code Monkey](./please-do-not-feed-the-code-monkey)
+* [Data Visualization Case Study: Seattle DUI Incidents](./seattle-dui)
+* [Bootstrapping Confidence Intervals... Doesn't Work](./assets/static/bootstrapping-confidence-intervals-doesnt-work.html)
