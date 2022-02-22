@@ -36,7 +36,7 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID }) => (
                 </h1>
 
                 <ul className="vcard-details">
-                <li className="vcard-detail" itemprop="homeLocation" title="Seattle, WA"><span className="octicon octicon-location"></span> Seattle, WA</li>
+                <li className="vcard-detail" itemprop="homeLocation" title="Portland, OR"><span className="octicon octicon-location"></span> Portland, OR</li>
                 <li className="vcard-detail"><span className="octicon octicon-mail"></span> <a className="email" href="mailto:%72%73%70%65%6e%73%69%6e%67%65%72@%67%6d%61%69%6c.%63%6f%6d">rspensinger@gmail.com</a></li>
                 </ul>
             </div>
