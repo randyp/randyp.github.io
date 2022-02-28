@@ -27,29 +27,32 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID }) => (
 		}
 	</head>
 	<body>
-        <div className="row">
-            <div className="col-md-3" itemscope="" itemtype="http://schema.org/Person" style={{padding: "51px"}}>
-                <img alt="" className="avatar hidden-sm hidden-xs" height="auto" src="https://avatars1.githubusercontent.com/u/624757?v=3&amp;s=460" width="100%" />
+        <div className="col-md-12">
+            <div className="row hidden-sm hidden-xs" style={{height: "51px" }} />
+            <div className="row">
+                <div className="col-md-3 hidden-sm hidden-xs" itemscope="" itemtype="http://schema.org/Person" style={{padding: "0 51px"}}>
+                    <img alt="" className="avatar hidden-sm hidden-xs" height="auto" src="https://avatars1.githubusercontent.com/u/624757?v=3&amp;s=460" width="100%" />
 
-                <h2 className="vcard-names">
-                    <span className="vcard-username" itemprop="additionalName">randyp</span>
-                </h2>
+                    <h2 className="vcard-names">
+                        <span className="vcard-username" itemprop="additionalName">randyp</span>
+                    </h2>
 
-                <ul className="vcard-details">
-                <li className="vcard-detail" itemprop="homeLocation" title="Portland, OR"><span className="octicon octicon-location"></span> Portland, OR</li>
-                <li className="vcard-detail"><span className="octicon octicon-mail"></span> <a className="email" href="mailto:%72%73%70%65%6e%73%69%6e%67%65%72@%67%6d%61%69%6c.%63%6f%6d">rspensinger@gmail.com</a></li>
-                </ul>
-            </div>
-            <div className="col-md-8">
-                <div>
-                    <h3 className="article-header" href="/index.html"><span className="octicon octicon-book"></span> <span className='current-file'>README.md</span></h3>
-                    <article className="markdown-body">{main}</article>
+                    <ul className="vcard-details">
+                    <li className="vcard-detail hidden-sm hidden-xs" itemprop="homeLocation" title="Portland, OR"><span className="octicon octicon-location"></span> Portland, OR</li>
+                    <li className="vcard-detail hidden-sm hidden-xs"><span className="octicon octicon-mail"></span> <a className="email" href="mailto:%72%73%70%65%6e%73%69%6e%67%65%72@%67%6d%61%69%6c.%63%6f%6d">rspensinger@gmail.com</a></li>
+                    </ul>
                 </div>
-                <footer><p>&copy; Randy Pensinger</p></footer>
+                <div className="col-md-8">
+                    <div>
+                        <h3 className="article-header" href="/index.html"><span className="octicon octicon-book"></span> <span className='current-file'>randyp.md</span></h3>
+                        <article className="markdown-body">{main}</article>
+                    </div>
+                    <footer><p>&copy; Randy Pensinger</p></footer>
+                </div>
+                <div className="col-md-1">
+                </div>
             </div>
-            <div className="col-md-1">
-            </div>
-		</div>
+        </div>
 		{
 			script != undefined
 				? ( <script src={ _relativeURL( `/assets/js/${ script }.js`, _ID ) } /> )
