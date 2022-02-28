@@ -28,7 +28,8 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID }) => (
 	</head>
 	<body>
         <div className="col-md-12">
-            <div className="row hidden-sm hidden-xs" style={{height: "51px" }} />
+            <div className="row hidden-sm hidden-xs" style={{height: "36px", maxHeight: "36px" }} />
+            <div className="row" style={{height: "15px", maxHeight: "15px" }} />
             <div className="row">
                 <div className="col-md-3 hidden-sm hidden-xs" itemscope="" itemtype="http://schema.org/Person" style={{padding: "0 51px"}}>
                     <img alt="" className="avatar hidden-sm hidden-xs" height="auto" src="https://avatars1.githubusercontent.com/u/624757?v=3&amp;s=460" width="100%" />
