@@ -1,57 +1,102 @@
-## Please Do Not Feed The Code Monkeys
-#### 2020-02-21 by Randy Pensinger
+### Please Do Not Feed The Code Monkeys
+###### 2020-03-12 by Randy Pensinger
 
-Do you develop software?
+Do you write software?
 Do you feed the Code Monkeys?
-Not sure what the Code Monkeys are?
+Not sure who the Code Monkeys are?
 I can explain.
 
-Inside each software developer exists the Code Monkeys, gods of degenerate software development.
-The Code Monkeys are not instrinsically bad, just unevolved and ill-suited to team software development.
+The Code Monkeys are the root of our natural predispositions and learned habits which bias us towards degenerate software engineering.
+They are chaotic demons who reside in each person.
+They whisper lies, omit the truth and tempt people to programming sin.
+Through their influence the Code Monkeys spoil a software project's fate.
+Sometimes they playfully pluck at the fate, satisfied with a high bug count, but just as often they doom they project.
 
-Have you ever been asked a question about some code you didn't write and you redirected the question to someone else... and you never learned about the answer?
-Or maybe someone asked you a question and you told them they didn't need to know the answer?
-Or maybe you had to use a new software library and you copy+pasted some code without understanding what it does?
+Don't believe me?
+How else could one explain such high software project failure rates?
+I've seen published estimates of failure rates starting at 15% and as high as 80%.
+I subscribe to the Standish Group’s 2020 CHAOS report which estimates that around 66% of software projects fail.
+Someone is responsible for a large portion of those failures.
+I blame the Code Monkeys.
+
+Of course the Code Monkeys aren't literal demons.
+The Code Monkeys are people's base instincts and unevolved traits.
+These instincts and traits are ill-suited for software engineering and teams, and it is through knowledge and discipline that we can nullify their influence.
+
+Have you ever copy+pasted some code you didn't understand?
 Or maybe a team member was writing code they didn't understand... and you didn't help them understand?
-Those were the Code Monkeys, who are not curious enough and don't share what curiousity they have.
+Or have you been asked a question about some code you didn't write, you redirected the question but never learned the answer yourself?
+Or maybe someone asked you a question, and you told them they didn't need to know the answer?
+That was the Code Monkeys, who are not curious.
 
-Have you ever started working on a new application page without fully understanding who was going to use the page and how?
-Or maybe you knew who was going to use the page but you never met them?
-Or maybe you knew how they were going to use the page because you were going to design the page to be used a certain way?
-Or maybe you designed a page but never used it and never watched someone use the page?
-Those were also the Code Monkeys, who don't proactively collaborate enough and consider others when building software.
+Have you ever started working on a new application page without fully understanding who was going to use the page and how they were going to use it?
+Or maybe you knew who was going to use the page, but you never met them?
+And you knew how they were going to use the page because you designed the page to be used a certain way?
+Or maybe you designed a page which you never watched someone using the page?
+That was also the Code Monkeys, who don't collaborate.
 
 Have you ever written a function or program that did something unexpected, and you couldn't explain what was happening?
 And you never followed up because the function wasn't important?
-Or you didn't have enought time?
+Or you didn't have enough time?
 And now that code is in production...
-Or maybe you don't know what the function actually does because you didn't test it?
-Also the damn Code Monkeys! They have trouble comprehending consequences or pretend they don't exist because the consequences don't affect them.
+Or maybe you don't know what the function actually does because you did not test it?
+Also the damn Code Monkeys! They have no discipline.
 
-In short, Code Monkeys are not a curious, social, evolved beings capable of truly great software.
-Instead the Code Monkeys furiously author thousands of lines of code of questionable quality, perhaps eager to please The Boss Monkeys.
-Don't even get me started on the Boss Monkeys.
+In short, the Code Monkeys are not a curious, collaborative, disciplined beings capable of truly great software.
 
-All software developers have _fed the Code Monkeys_.
-If you have worked with me I have seen you feed the Code Monkeys and you have seen me do the same.
-There are also Boss Monkeys, Gant Chart Monkeys, et cetera.
-Don't even get me started on the Boss Monkeys.
+All software engineers have *fed the Code Monkeys*.
+If you have worked with me then I have seen you feed the Code Monkeys and you have seen me do the same.
+There are also Boss Monkeys, Gant Chart Monkeys, *et cetera*.
+Don't even get me started on The Boss Monkeys.
 
 Thankfully I feel I have been feeding the Code Monkeys less frequently over time.
-I feel I can say the same with the people I have been working with.
+I feel I can say the same for the people work with.
+I have found no shortage of advice on how to restrain the Code Monkeys.
+With regard to curiosity, collaboration and discipline I would like to refer you to a few resources with my own introductions and perspective.
 
-I have found no shortage of advice.
-A great example of a blog post is Jeff Atwood's [Sharing The Customer's Pain](https://blog.codinghorror.com/sharing-the-customers-pain/).
-And I have seen many other great examples.
-Our Code Monkeys have had fewer and fewer places to hide as we have disciplined ourselves and each other.
+### Curiosity
 
-Here is my advice based on quirky comprehension.
+I'm certain beyond doubt that curiosity and creativity are two sides of the same coin and share the same processes.
+John Cleese's talk [Creativity in Management](https://www.youtube.com/watch?v=Pb5oIIPO62g) is the best resource I have found to foster curiosity, except that you will have to mentally replace the word "creative" with "curious" in his talk.
+To summarize his talk (applied to curiosity):
 
-### Curiousity
-More to come here.
+* Curiosity is not a talent.
+* Curiosity does not come from the closed mode, which is when you are focused.
+* Curious people are able to play. Curious people can ask "What if?" and "How?".
+* To be curious you must enter the open mode by giving yourself "space, time, time, confidence and humor".
+* Use the open mode to ask the right questions, use the closed mode to work once you have an answer. Repeat.
+
+Contrary to Cleese's talk I don't need to relax for 30 minutes each time I need to be curious or creative.
+Only for the most complicated problems do I have to sit on my thumbs until my mind relaxes.
+But I do need some or all of the components of "space, time, time, confidence and humor" to start the process.
+I suspect the same applies to others. 
 
 ### Collaboration
-More to come here.
 
-### Accountability
-More to come here.
+The primary benefit of collaboration is empathy, not creativity.
+Collaboration is about *working together* towards a *common goal*.
+Creativity solves problems but empathy is essential to define the problems.
+Defining the problems starts by understanding the context, *id est* the customers and what they are trying to accomplish.
+Software written without context is called [ivory tower software development](https://blog.codinghorror.com/ivory-tower-development/) and leads to software which doesn't solve the customer's problems.
+
+[Sharing The Customer's Pain](https://blog.codinghorror.com/sharing-the-customers-pain/) is a great article on keeping in touch with your customers by "manning the support desk".
+[Dogfooding](https://www.joelonsoftware.com/2001/05/05/what-is-the-work-of-dogs-in-this-country/), using your own software, is an asocial form collaboration.
+[Shadowing](https://www.investopedia.com/terms/s/shadowing.asp) is a mix of the previous two.
+All approaches build empathy for the customer.
+Sharing the customers pain is a social, reactive technique for building empathy.
+Dogfooding is an asocial, proactive technique for building empathy.
+Shadowing is a social, proactive technique for building empathy.
+
+Group design and planning is a difficult skill for which I don't have a specific article I can recommend.
+I feel people often confuse group design as the only form of collaboration.
+As long as you are *working together* towards a *common goal* you are collaborating, and group design is not always required.
+My time at [MediaAlpha](https://www.linkedin.com/company/mediaalpha/mycompany/verification/) has taught me building empathy often allows me to anticipate our common goal so that I can implement a proof-of-concept for review by the customer.
+Reviewing your POC with your customer is a great way to build empathy!
+
+When you decide to design and plan in a group I think the most important aspect you can control is your own behavior.
+I'll again refer you to John Cleese's talk [Creativity in Management](https://www.youtube.com/watch?v=Pb5oIIPO62g) for how to behave in group planning.
+Beyond that, perhaps unstructured meetings are best for building empathy as well as creativity.
+
+### Discipline
+
+[Extreme Programming](http://www.extremeprogramming.org/).
