@@ -1,8 +1,11 @@
-# Seattle DUI Incidents: A case study in story telling
-## (between 2010-07-17 and 2016-02-27)
+### Seattle DUI Incidents: Telling a Story
+<p class="break"><br></p>
+<aside>2020-03-14 by Randy Pensinger</aside>
+<p class="break"><br></p>
 
 Worthwhile visualizations tell stories.
 Below is a short case study in which we iteratively refine a visualization from meaningless data points to a tale of the clock.
+The data set is Seattle DUIs between 2010-07-17 and 2016-02-27.
 
 <div id="counts">
 <h4>Total DUI Counts (Darker Blue represents higher incidence count)</h4>
