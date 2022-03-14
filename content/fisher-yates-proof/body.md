@@ -213,7 +213,6 @@ You can easily see that algorithm results in each element possibly being moved t
                         return d
                     });
 
-
             function emptyHistory(n) {
                 var toReturn = [];
                 for (var i = 0; i < n; i++) {
@@ -367,7 +366,6 @@ You can easily see that algorithm results in each element possibly being moved t
                         });
                         cleanupHistory(history);
                     });
-                    console.log(histories);
                     swapProb.transition()
                             .delay(1000)
                             .duration(1000)

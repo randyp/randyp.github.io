@@ -32,11 +32,15 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID }) => (
             <div className="row" style={{height: "15px", maxHeight: "15px" }} />
             <div className="row">
                 <div className="col-md-3 hidden-sm hidden-xs" itemScope="" itemType="http://schema.org/Person" style={{padding: "0 51px"}}>
-                    <img alt="" className="avatar hidden-sm hidden-xs" height="auto" src="https://avatars1.githubusercontent.com/u/624757?v=3&amp;s=460" width="100%" />
+                    <a href="/" rel="prev">
+                        <img alt="avatar" className="avatar hidden-sm hidden-xs" height="auto" src="https://avatars1.githubusercontent.com/u/624757?v=3&amp;s=460" width="100%" />
+                    </a>
 
-                    <h2 className="vcard-names">
-                        <span className="vcard-username" itemProp="additionalName">randyp</span>
-                    </h2>
+                    <a href="/" rel="prev">
+                        <h2 className="vcard-names">
+                            <span className="vcard-username" itemProp="additionalName">randyp</span>
+                        </h2>
+                    </a>
 
                     <ul className="vcard-details">
                     <li className="vcard-detail hidden-sm hidden-xs" itemProp="homeLocation" title="Portland, OR"><span className="octicon octicon-location" /> Portland, OR</li>
@@ -45,7 +49,7 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID }) => (
                 </div>
                 <div className="col-md-8">
                     <div>
-                        <h3 className="article-header" href="/index.html"><span className="octicon octicon-book"/> <span className='current-file'>randyp.md</span></h3>
+                        <a href="/" rel="prev"><h3 className="article-header"><span className="octicon octicon-book"/> <span className='current-file'>randyp.md</span></h3></a>
                         <article className="markdown-body">
                             {main}
                         </article>
