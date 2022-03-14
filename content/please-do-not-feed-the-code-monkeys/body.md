@@ -8,39 +8,41 @@ I can explain.
 
 The Code Monkeys are the root of our natural predispositions and learned habits which bias us towards degenerate software engineering.
 They are chaotic demons who reside in each person.
-They whisper lies, omit the truth and tempt people to programming sin.
+They whisper lies, omit the truth, and tempt people to programming sins.
 Through their influence the Code Monkeys spoil a software project's fate.
-Sometimes they playfully pluck at the fate, satisfied with a high bug count.
-Just as often they doom they project.
+Sometimes they playfully pluck at the project's future, satisfied with a high bug count.
+Just as often they doom the project.
 
 Don't believe me?
-How else could one explain such high software project failure rates?
+How else could one explain such high rates of software project failure?
 I've seen published estimates of failure rates starting at 15% and as high as 80%.
 I subscribe to the Standish Group’s 2020 CHAOS report which estimates that around 66% of software projects fail.
 Someone is responsible for a large portion of those failures.
 I blame the Code Monkeys.
 
 Of course the Code Monkeys aren't literal demons.
-The Code Monkeys are people's base instincts and traits.
-These instincts and traits are ill-suited for software engineering and team environments.
-Let's run through a few scenarios and see if any are familiar to you.
+The Code Monkeys are people's base instincts and traits, ill-suited for software engineering and team environments.
+Let's run through a few scenarios and see if any are familiar.
 
 Have you ever copy+pasted some code you didn't understand?
-Or maybe a team member was writing code they didn't understand, and you didn't help them understand?
-Or maybe a team member mentioned some work during your daily stand up that you didn't understand, and you didn't ask?
-Or have you ever started working on a problem without listing out a couple possible solutions because you already one solution?
+Or maybe a team member was writing code they didn't understand, and you didn't help them?
+Has a team member ever mentioned an unfamiliar project during the daily stand-up, and you didn't ask for a quick explanation?
+Have you ever started working on a problem without listing out a couple possible solutions because you already knew one solution?
 That was the Code Monkeys, who are not curious.
 
-Have you ever started working on a new application page without fully understanding who was going to use the page and how they were going to use it?
+Have you ever started working on a new application page without fully understanding who was going to use it?
 Or maybe you knew who was going to use the page, but you never met them?
 And you knew how they were going to use the page because you designed the page to be used a certain way?
-Or maybe you designed a page which you never watched someone use?
-Or maybe you know the current release plan is overly optimistic, but you don't say anything because the plan isn't your problem?
+Have you ever created a page but never watched anyone using it?
+Have you ever kept quiet when someone was announcing an overly optimistic release plan because the plan wasn't your problem?
 That was also the Code Monkeys, who don't collaborate.
 
+Have you ever written a feature that know one asked for, but you are sure will be used eventually?
+Do you have a general idea of the tasks you are going to work on this week and the order in which you are going to work on them?
+Are you constantly asking for time to refactor your code and address the teams technical debt, and feel miffed when management says no?
 Have you ever written a function or program that did something unexpected, and you couldn't explain what was happening?
 Or maybe you don't know what the function actually does because you did not test it?
-
+Do you frequently have to release an emergency fix to production?
 Also the damn Code Monkeys! They have no discipline.
 
 In short, the Code Monkeys are not a curious, collaborative, disciplined beings capable of great software.
