@@ -154,15 +154,20 @@ Simple, no? The animation of an example shuffle is also pretty simple. You aren'
     })();
 </script>
 
-## Proof
+## Visual Proof
 
-In the visualization above, we are only demonstrating one possible shuffle each time.
-What if we considered all possible swaps and kept track of the probability each element was in each position?
-If a shuffle was truly random then each element, represented by color, should occur in each position equally after shuffling.
+In the visualization above, we were only demonstrating one possible shuffle each time.
+What if we considered all possible swaps at each iteration and kept track of the probability each element was in each position?
+If a shuffle was truly random then each element, represented by color, should occur in each position equally after shuffling the whole list.
 
 In the visualization below, we highlight two positions before considering the swap.
 Colors represent elements.
+Each row represents the result of an iteration.
+A multicolored square means for that specific position we had a certain probability of being those elements, proportional to area of the color.
 After an iteration we stop considering the last element, hence the diagonal shape.
+After each iteration you can sort of see that the last position has equal chance to be any element.
+Once we are done iterating we simplify the visual probabilities in each position and collapse the diagonal.
+You can easily see that algorithm results in each element possibly being moved to each position with uniform probability.  
 
 <svg id="swaps-viz"></svg>
 <script>

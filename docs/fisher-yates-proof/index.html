@@ -147,13 +147,18 @@ for i in range(len(a) - 1, 0, -1): # n-1, n-2, n-3, ... 1
     })();
 </script>
 
-<h2 id="proof">Proof</h2>
-<p>In the visualization above, we are only demonstrating one possible shuffle each time.
-What if we considered all possible swaps and kept track of the probability each element was in each position?
-If a shuffle was truly random then each element, represented by color, should occur in each position equally after shuffling.</p>
+<h2 id="visual-proof">Visual Proof</h2>
+<p>In the visualization above, we were only demonstrating one possible shuffle each time.
+What if we considered all possible swaps at each iteration and kept track of the probability each element was in each position?
+If a shuffle was truly random then each element, represented by color, should occur in each position equally after shuffling the whole list.</p>
 <p>In the visualization below, we highlight two positions before considering the swap.
 Colors represent elements.
-After an iteration we stop considering the last element, hence the diagonal shape.</p>
+Each row represents the result of an iteration.
+A multicolored square means for that specific position we had a certain probability of being those elements, proportional to area of the color.
+After an iteration we stop considering the last element, hence the diagonal shape.
+After each iteration you can sort of see that the last position has equal chance to be any element.
+Once we are done iterating we simplify the visual probabilities in each position and collapse the diagonal.
+You can easily see that algorithm results in each element possibly being moved to each position with uniform probability.  </p>
 <p><svg id="swaps-viz"></svg></p>
 <script>
     (function () {
