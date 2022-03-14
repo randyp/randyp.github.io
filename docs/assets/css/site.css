@@ -84,3 +84,15 @@ footer {
 	grid-row-end: 3;
 	padding: 1rem;
 }
+
+aside {
+	color: grey;
+	padding: 0 16px 16px 16px;
+}
+
+p.break {
+	margin:0;
+	padding:0;
+	height:0;
+	overflow: hidden;
+}

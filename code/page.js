@@ -46,7 +46,9 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID }) => (
                 <div className="col-md-8">
                     <div>
                         <h3 className="article-header" href="/index.html"><span className="octicon octicon-book"/> <span className='current-file'>randyp.md</span></h3>
-                        <article className="markdown-body">{main}</article>
+                        <article className="markdown-body">
+                            {main}
+                        </article>
                     </div>
                     <footer><p>&copy; Randy Pensinger</p></footer>
                 </div>
@@ -64,8 +66,7 @@ const Page = ({ title, stylesheet, main, script, _relativeURL, _ID }) => (
 );
 
 Page.propTypes = {
-	title: PropTypes.string.isRequired,
-	main: PropTypes.node.isRequired,
+	main: PropTypes.node.isRequired
 };
 
 Page.defaultProps = {};
