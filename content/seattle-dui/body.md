@@ -1,6 +1,6 @@
 ### Seattle DUI Incidents: Telling a Story
 <p class="break"><br></p>
-<aside>2020-03-14 by Randy Pensinger</aside>
+<aside>2022-03-14 by Randy Pensinger</aside>
 <p class="break"><br></p>
 
 Worthwhile visualizations tell stories.
