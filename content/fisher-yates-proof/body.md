@@ -158,7 +158,7 @@ Simple, no? The animation of an example shuffle is also pretty simple. You aren'
 
 In the visualization above, we are only demonstrating one possible shuffle each time.
 What if we considered all possible swaps and kept track of the probability each element was in each position?
-If a shuffle was truly random then each element, representy by color, should occur in each position equally after shuffling.
+If a shuffle was truly random then each element, represented by color, should occur in each position equally after shuffling.
 
 In the visualization below, we highlight two positions before considering the swap.
 Colors represent elements.
