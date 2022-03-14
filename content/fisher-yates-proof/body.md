@@ -3,9 +3,9 @@
 <aside>2022-03-14 by Randy Pensinger</aside>
 <p class="break"><br></p>
 
-[I have found great visualization](https://bost.ocks.org/mike/shuffle/) of the [fisher-yates shuffling algorithm](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm), but have yet to find a great *visualization of the proof*> that the fisher-yates shuffle is _random_.
+[I have found great visualization](https://bost.ocks.org/mike/shuffle/) of the [fisher-yates shuffling algorithm](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm), but have yet to find a great *visualization of the proof* that the fisher-yates shuffle is *random*.
 
-What do we mean by _random_?
+What do we mean by *random*?
 One way to prove a shuffle is (uniformly) random is to show that every element has equal probability of being shuffled to every position, including the original position.
 
 ![each element in each position](../assets/img/each-element-each-position.svg)
