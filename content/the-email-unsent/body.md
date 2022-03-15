@@ -34,7 +34,7 @@ Did my boss hear me?
 Did they hear how unprofessionally this person had acted?
 Did they hear my "Strong No"?
 Surely they must have misheard me.
-I wanted to follow up immediately but I waited until the end of the meeting to make my final plea.
+I wanted to follow up immediately but I waited until the end of the meeting to make my plea.
 
 > I strongly recommend not hiring this person.
 > The candidate should respect our time just like we respect theirs.
@@ -105,23 +105,23 @@ Though I was angry, my opinion would be strictly professional.
 
 Then lightning.
 
-This was personal.
-That was the whole point.
-I am a person and their actions deeply me.
+This was personal and I shouldn't deny it.
+That was the point.
+I am a person and their actions offended me.
 I shouldn't stifle my emotions.
-I should understand why I feel this way.
+I should understand why I felt this way.
 Why was I offended?
 
-So clear were the answers, I was flooded with understanding.
-I was offended because I had been in the candidate's exact position and acted differently.
+The answers were clear, I was flooded with understanding.
+I was offended because I had been in the candidate's situation and acted differently.
 Maybe a harder position!
-At the end of my first software job I was tasked with extreme overtime but I managed to interview and behave professionally.
+At the end of my first software job I was tasked with extreme overtime, but I managed to interview and behave professionally.
 That was why I was angry.
-I felt I had been slighted because the standards applied to me were higher than the standards applied to the candidate.
+I felt slighted because the standards applied to me were higher than the standards applied to the candidate.
 If I had acted that way in my interviews I wouldn't have been hired.
 
-With insight and renewed energy I spent another hour on a new version of the email.
-The new version used my personal anecdote to justify passing on the candidate.
+With insight and renewed energy I spent another hour redrafting the email.
+The new version used my personal anecdote to justify rejecting the candidate.
 I was inspired by a passage from the novel [DeathWing](https://www.goodreads.com/book/show/2596527-deathwing), in which a squad of space marines must argue a difficult decision of loyalty.
 Instead of strong words, they use *the old ways* and argue by accounting a relevant experience.
 
@@ -133,7 +133,7 @@ Instead of strong words, they use *the old ways* and argue by accounting a relev
 
 The purpose of sharing your experience is that the experience stands on its own, away from you.
 You leave the experience up for interpretation by the listener.
-You have your experiences, they have theirs, and from those seeds wisdom is birthed.
+You have your experiences, they have theirs, and from those seeds wisdom grows.
 
 Unlike the protagonist in that story I had to communicate more directly, but I would let my story do most of the arguing.
 I drafted the email, reviewed it, took a lunch break, then reviewed it again.
@@ -151,7 +151,7 @@ At the peak of my anger I reached another moment of clarity.
 I archived the email and deleted it.
 I never sent it.
 
-My boss was incredibly busy and hardworking, and had already made their decision.
+My boss was incredibly busy, hardworking, and had already made their decision.
 Perhaps I was still raw from the SpeedTax experience, even after a decade.
 The email was personal, I was certain, but was it also professional?
 In time I would know if I was doing the right thing.
