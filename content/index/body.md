@@ -17,7 +17,9 @@ Here is my [online resume](https://randyp.github.io/resume/).
 * [Please Do Not Feed The Code Monkeys](./please-do-not-feed-the-code-monkeys)
 * [Fisher-Yates Shuffle: A Visual Proof](./fisher-yates-proof)
 * [Seattle DUI Incidents: Visualizations Should Tell a Story](./seattle-dui)
+* [The Email Unsent: Please Don't Hire [Candidate]](./the-email-unsent)
 <!-- * [Bootstrapping Confidence Intervals... Doesn't Work](./assets/static/bootstrapping-confidence-intervals-doesnt-work.html) -->
+
 
 ## Inspirations
 
