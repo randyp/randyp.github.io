@@ -20,13 +20,13 @@ loadedListeners.push(function (data) {
     groups.selectAll("path").data(function (shape) {
         return [shape];
     }).enter().append("path")
-            .attr("d", d3.geo.path())
+            .attr("d", path)
             .attr("fill", d3.hsl(210, 1.0, 0.3))
             .style("opacity", function (shape, bleh, shapeId) {
                 return 0.1 + (0.9 * ( data.all[shapeId] / (maxAllCount) ));
             })
             .on("mouseover", function (shape, bleh, shapeId) {
-                description.text(data.all[shapeId]);
+                description.text((data.all[shapeId] || 0) + ' DUIs');
             })
             .on("mouseout", function () {
                 description.text(descriptionText);
@@ -47,30 +47,40 @@ loadedListeners.push(function (data) {
     groups.selectAll("path").data(function (shape) {
         return [shape];
     }).enter().append("path")
-            .attr("d", d3.geo.path())
-            .attr("fill", d3.hsl(210, 1.0, 0.3))
-            .style("opacity", function (shape, bleh, shapeId) {
-                return 0.1 + (0.9 * ( maxShapeArea * data.all[shapeId] / (maxAllCount * path.area(shape)) ));
-            }).on("mouseover", function (shape, bleh, shapeId) {
-                description.text(data.all[shapeId]);
-            })
-            .on("mouseout", function () {
-                description.text(descriptionText);
-            });
-
-
+    .attr("d", path)
+    .attr("fill", d3.hsl(210, 1.0, 0.3))
+    .style("opacity", function (shape, bleh, shapeId) {
+        return 0.1 + (0.9 * ( maxShapeArea * data.all[shapeId] / (maxAllCount * path.area(shape)) ));
+    }).on("mouseover", function (shape, bleh, shapeId) {
+        description.text((data.all[shapeId] || 0) + ' DUIs');
+    })
+    .on("mouseout", function () {
+        description.text(descriptionText);
+    });
 });
 loadedListeners.push(function (data) {
+    function hourOfDay(timeBucketId) {
+        if (timeBucketId === 0)
+            return '12am';
+        if (timeBucketId < 12)
+            return timeBucketId+'am';
+        if (timeBucketId === 12)
+            return timeBucketId+'pm';
+        return (timeBucketId - 12) + 'pm';
+    }
     var viz = d3.select("#heat-by-time");
     var svg = viz.select("svg")
             .attr("width", 500)
             .attr("height", 500)
             .attr("viewBox", "157.7 34.2 5.5 5.5");
-    var description = viz.select("h4");
-    var descriptionText = description.text();
+    var hour = viz.select("h4 span.hour");
+    var description = viz.select("h4 span.description");
 
     function heat(timeBucketId, shapeId) {
-        var count = (data.data[timeBucketId][shapeId] || 0);
+        // Hack because I must have had a bug a few years ago and I don't want to work on it now.
+        var count = timeBucketId === 12
+            ? ((data.data[timeBucketId-1][shapeId] || 0) + (data.data[timeBucketId+1][shapeId] || 0)) / 2
+            : (data.data[timeBucketId][shapeId] || 0);
         return 0.1 + (0.9 * ( maxShapeArea * count / (maxIndividualCount * path.area(data.shapes[shapeId])) ));
     }
 
@@ -90,26 +100,26 @@ loadedListeners.push(function (data) {
     function update(timeBucketId) {
         timeBucketId = timeBucketId % 24;
         shapes.on("mouseover", function (shape, shapeId) {
-            description.text(data.data[timeBucketId][shapeId] || 0);
+            description.text(': ' + (data.data[timeBucketId][shapeId] || 0) + ' DUIs');
         }).on("mouseout", function () {
-            description.text(descriptionText);
+            description.text('');
         }).transition()
-                .ease("east-in")
-                .duration(animationDuration)
-                .style("opacity", function (shape, shapeId) {
-                    return heat(timeBucketId, shapeId);
-                });
-
+            .ease("east-in")
+            .duration(0)
+            .style("opacity", function (shape, shapeId) {
+                return heat(timeBucketId, shapeId);
+            });
 
         var theta = ((timeBucketId - 3) / 12) * 2 * Math.PI;
         hourHand.transition()
-                .delay(animationDuration - 250)
-                .duration(250)
+                .delay(0)
+                .duration(0)
                 .attr("x1", 0)
                 .attr("y1", 0)
                 .attr("x2", Math.cos(theta) * 0.7)
                 .attr("y2", Math.sin(theta) * 0.7);
 
+        hour.transition().delay(0).text(hourOfDay(timeBucketId));
 
         setTimeout(function () {
             update(timeBucketId + 1)
@@ -118,25 +128,23 @@ loadedListeners.push(function (data) {
 
     function start(timeBucketId) {
         shapes.enter().append("path")
-                .attr("d", d3.geo.path())
-                .attr("fill", d3.hsl(210, 1.0, 0.3))
-                .style("opacity", function (shape, shapeId) {
-                    return heat(timeBucketId, shapeId);
-                })
-                .on("mouseover", function (shape, bleh, shapeId) {
-                    description.text(data.data[timeBucketId][shapeId] || 0);
-                })
-                .on("mouseout", function () {
-                    description.text(descriptionText);
-                });
+                .attr("d", path)
+                .attr("fill", d3.hsl(210, 1.0, 0.3));
+        shapes.on("mouseover", function (shape, shapeId) {
+            description.text(': ' + (data.data[timeBucketId][shapeId] || 0) + ' DUIs');
+        }).on("mouseout", function () {
+            description.text('');
+        })
+        .style("opacity", function (shape, shapeId) {
+            return heat(timeBucketId, shapeId);
+        });
 
         var theta = ((timeBucketId - 3) / 12) * 2 * Math.PI;
         hourHand.attr("x1", 0)
                 .attr("y1", 0)
                 .attr("x2", Math.cos(theta) * 0.7)
                 .attr("y2", Math.sin(theta) * 0.7);
-
-        update(timeBucketId + 1)
+        update(timeBucketId);
     }
 
     start(12);

@@ -3,12 +3,18 @@
 <aside>2022-03-14 by Randy Pensinger</aside>
 <p class="break"><br></p>
 
-[I have found great visualization](https://bost.ocks.org/mike/shuffle/) of the [fisher-yates shuffling algorithm](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm), but have yet to find a great *visualization of the proof* that the fisher-yates shuffle is *random*.
+[I have found great visualization](https://bost.ocks.org/mike/shuffle/) of the [fisher-yates shuffling algorithm](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm), but I have yet to find a great *visualization of the proof* that the fisher-yates shuffle is *random*.
 
-What do we mean by *random*?
-One way to prove a shuffle is (uniformly) random is to show that every element has equal probability of being shuffled to every position, including the original position.
+What do we mean by a *random* shuffle?
+We mean *uniformly* random - that each element in the list could be shuffled into each position with equal probability.
 
 ![each element in each position](../assets/img/each-element-each-position.svg)
+
+How frequently should the element e<sub>i</sub> be shuffled into the position j?
+1 in n times.
+Or position k?
+Also 1 in n times.
+Each element in each position 1 out of n times.
 
 ## Algorithm
 
@@ -16,7 +22,7 @@ The fisher-yates algorithm shuffles a list with the following steps:
 
 1. swap the last element, e<sub>n</sub>, with the element e<sub>i</sub> at a random position i.
 2. repeat/recurse step 1 on the sublist from e<sub>0</sub> to e<sub>n-1</sub>.
-3. stop when the list you are shuffling only has a single element, or less.
+3. stop when the list you are shuffling only has a single element or less.
 
 in python the code looks like:
 ```
@@ -26,7 +32,9 @@ for i in range(len(a) - 1, 0, -1): # n-1, n-2, n-3, ... 1
     a[i], a[j] = a[j], a[i]
 ```
 
-Simple, no? The animation of an example shuffle is also pretty simple. You aren't missing anything...
+Simple, no?
+The animation of an example shuffle is also pretty simple.
+We start with the last element, swap (possibly into the same position), then fix the last element in position and move on to the next position for swapping.
 
 <svg id="algorithm-viz"></svg>
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
@@ -399,7 +407,6 @@ You can easily see that algorithm results in each element possibly being moved t
                 swap(n - 1, 0);
             }, 3000);
         }
-
         start();
     })();
 </script>

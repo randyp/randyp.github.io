@@ -3,16 +3,21 @@
 <aside>2022-03-14 by Randy Pensinger</aside>
 <p class="break"><br></p>
 
-<p><a href="https://bost.ocks.org/mike/shuffle/">I have found great visualization</a> of the <a href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm">fisher-yates shuffling algorithm</a>, but have yet to find a great <em>visualization of the proof</em> that the fisher-yates shuffle is <em>random</em>.</p>
-<p>What do we mean by <em>random</em>?
-One way to prove a shuffle is (uniformly) random is to show that every element has equal probability of being shuffled to every position, including the original position.</p>
+<p><a href="https://bost.ocks.org/mike/shuffle/">I have found great visualization</a> of the <a href="https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm">fisher-yates shuffling algorithm</a>, but I have yet to find a great <em>visualization of the proof</em> that the fisher-yates shuffle is <em>random</em>.</p>
+<p>What do we mean by a <em>random</em> shuffle?
+We mean <em>uniformly</em> random - that each element in the list could be shuffled into each position with equal probability.</p>
 <p><img src="../assets/img/each-element-each-position.svg" alt="each element in each position"></p>
+<p>How frequently should the element e<sub>i</sub> be shuffled into the position j?
+1 in n times.
+Or position k?
+Also 1 in n times.
+Each element in each position 1 out of n times.</p>
 <h2 id="algorithm">Algorithm</h2>
 <p>The fisher-yates algorithm shuffles a list with the following steps:</p>
 <ol>
 <li>swap the last element, e<sub>n</sub>, with the element e<sub>i</sub> at a random position i.</li>
 <li>repeat/recurse step 1 on the sublist from e<sub>0</sub> to e<sub>n-1</sub>.</li>
-<li>stop when the list you are shuffling only has a single element, or less.</li>
+<li>stop when the list you are shuffling only has a single element or less.</li>
 </ol>
 <p>in python the code looks like:</p>
 <pre><code>a = [ ... ]
@@ -20,7 +25,9 @@ for i in range(len(a) - 1, 0, -1): # n-1, n-2, n-3, ... 1
     j = random.randint(0, i)
     a[i], a[j] = a[j], a[i]
 </code></pre>
-<p>Simple, no? The animation of an example shuffle is also pretty simple. You aren&#39;t missing anything...</p>
+<p>Simple, no?
+The animation of an example shuffle is also pretty simple.
+We start with the last element, swap (possibly into the same position), then fix the last element in position and move on to the next position for swapping.</p>
 <p><svg id="algorithm-viz"></svg></p>
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script>
@@ -389,7 +396,6 @@ You can easily see that algorithm results in each element possibly being moved t
                 swap(n - 1, 0);
             }, 3000);
         }
-
         start();
     })();
 </script>
