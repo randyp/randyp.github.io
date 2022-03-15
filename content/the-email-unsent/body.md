@@ -112,7 +112,8 @@ I shouldn't stifle my emotions.
 I should understand why I felt this way.
 Why was I offended?
 
-The answers were clear, I was flooded with understanding.
+The answers were clear.
+I was flooded with understanding.
 I was offended because I had been in the candidate's situation and acted differently.
 Maybe a harder position!
 At the end of my first software job I was tasked with extreme overtime, but I managed to interview and behave professionally.
