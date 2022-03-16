@@ -53,7 +53,7 @@ Did I do a poor job of describing my interview?
 Did I fail to support my evaluation? 
 I decided I would write an email to clarify the candidate's behavior and support my evaluation.
 
-For about an hour I ignored my coding tasks and started writing an email on why we should hard-pass.
+For about an hour I ignored my coding tasks and started writing why we should hard-pass.
 I tried to balance my tone while writing.
 I wanted to be sincere but not dramatic.
 I tried to argue objectively.
