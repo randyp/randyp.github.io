@@ -11,7 +11,7 @@ During the remainder of the interview the candidate was distracted and occasiona
 I can't confirm they were working because we were not screen sharing, but that is besides the point.
 I couldn't get through the whole interview because the candidate was constantly elsewhere, looking at a different screen, typing on a different computer.
 They did ok in the questions I was able to ask, but I gave the candidate a **Strong No** for being inconsiderate and unprofessional.
-If the candidate was too busy for work they should have rescheduled.
+If the candidate was too busy for work then they should have rescheduled.
 That would have been the simple, professional solution to an extremely busy day or work emergency.
 
 When the interview panel convened I described my experience.
@@ -149,7 +149,7 @@ And I was denied PTO to visit my grandmother when her cancer went out of remissi
 AHHHHHH!
 
 At the peak of my anger I reached another moment of clarity.
-I archived the email and deleted it.
+I archived the email onto my laptop and deleted the draft.
 I never sent it.
 
 My boss was incredibly busy, hardworking, and had already made their decision.
