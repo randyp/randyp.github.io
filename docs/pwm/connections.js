@@ -8,10 +8,10 @@ const groups = [
 ];
 
 const wordNumber = {
-    "BEAT": 1, "METER": 2, "RHYTHM":3, "TIME":4,
-    "CATCH":5, "CLOCK":6, "NOTICE":7, "REGISTER":8,
-    "DONUT":1, "INCH":2, "JUROR":3, "MONTH":4,
-    "DAYS":5, "PADDLE":6, "TAG":7, "TIRED":8
+    "BEAT": 5, "METER": 1, "RHYTHM":0, "TIME":8,
+    "CATCH":7, "CLOCK":1, "NOTICE":6, "REGISTER":5,
+    "DONUT":2, "INCH":3, "JUROR":2, "MONTH":3,
+    "DAYS":4, "PADDLE":6, "TAG":7, "TIRED":9
 };
 
 function shuffle(array) {
