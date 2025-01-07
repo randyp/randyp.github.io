@@ -1,3 +1,7 @@
+document.querySelector('.hide').addEventListener('click', function() {
+    this.parentNode.remove();
+});
+
 const gameBoard = document.getElementById('game-board');
 const solutionBoard = document.getElementById('solution-board');
 const groups = [
