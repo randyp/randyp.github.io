@@ -1,0 +1,49 @@
+/* Style the game board and tiles as needed */
+#game-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Adjust for desired grid size */
+  gap: 10px;
+}
+
+.tile {
+  width: 100%;
+  padding: 20px 0 20px 0;
+  background-color: lightgray;
+  border: 1px solid black;
+  text-align: center;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.selected {
+  background-color: yellow;
+}
+
+#solution-board {
+}
+
+.connection {
+  width: 100%;
+  padding: 20px 0 20px 0;
+  border: 1px solid black;
+  text-align: center;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 20px 0 20px 0;
+}
+
+.connection-0 {
+  background-color: rgb(247, 242, 90);
+}
+
+.connection-1 {
+  background-color: rgb(175, 211, 121);
+}
+
+.connection-2 {
+  background-color: rgb(48, 69, 140);
+}
+
+.connection-3 {
+  background-color: rgb(135, 113, 186);
+}
